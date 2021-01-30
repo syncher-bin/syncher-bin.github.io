@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Noto Sans SC:300,300italic,400,400italic,700,700italic|Noto Sans SC:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Sliding Window,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="题目要求类型1： 给定两个字符串 s 和 t，找满足某种变化规律的字串/最大字串/最大字串长度等。 类型2：给定字符串 s，查找满足某种条件的最大/最小窗口。">
+<meta name="keywords" content="Sliding Window">
+<meta property="og:type" content="article">
+<meta property="og:title" content="滑动窗口解题模板">
+<meta property="og:url" content="https://0x400.com/fundamental/algorithm/lc-sliding-window-template/index.html">
+<meta property="og:site_name" content="Pylon&#39;s Blog">
+<meta property="og:description" content="题目要求类型1： 给定两个字符串 s 和 t，找满足某种变化规律的字串/最大字串/最大字串长度等。 类型2：给定字符串 s，查找满足某种条件的最大/最小窗口。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-01-30T02:11:09.948Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="滑动窗口解题模板">
+<meta name="twitter:description" content="题目要求类型1： 给定两个字符串 s 和 t，找满足某种变化规律的字串/最大字串/最大字串长度等。 类型2：给定字符串 s，查找满足某种条件的最大/最小窗口。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://0x400.com/fundamental/algorithm/lc-sliding-window-template/">
+
+
+
+
+
+  <title>滑动窗口解题模板 | Pylon's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b7188e764feaf5a9c6e9c033ee3d814b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pylon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/?v=k_MmoGDGjJ8" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于作者
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://0x400.com/fundamental/algorithm/lc-sliding-window-template/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pylon, Syncher">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/us.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pylon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">滑动窗口解题模板</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-24T19:12:10+08:00">
+                2019-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fundamental/" itemprop="url" rel="index">
+                    <span itemprop="name">Fundamental</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fundamental/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><p>类型1： 给定两个字符串 s 和 t，找满足某种变化规律的字串/最大字串/最大字串长度等。</p>
+<p>类型2：给定字符串 s，查找满足某种条件的最大/最小窗口。</p>
+<a id="more"></a>
+<h2 id="解题模板"><a href="#解题模板" class="headerlink" title="解题模板"></a>解题模板</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">slidingWindowTemplate</span><span class="params">(s, t)</span>:</span></span><br><span class="line">        <span class="comment"># 定义其他变量，存储结果，存储判断条件等变量</span></span><br><span class="line">        begin = end = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> f(end): <span class="comment"># case 1: slide end</span></span><br><span class="line">            <span class="comment"># do something</span></span><br><span class="line">            end += <span class="number">1</span></span><br><span class="line">			<span class="keyword">while</span> g(): <span class="comment"># case 2: slide begin</span></span><br><span class="line">                <span class="comment"># do something</span></span><br><span class="line">                 begin += <span class="number">1</span></span><br><span class="line">                    </span><br><span class="line">                <span class="comment"># meet some condition</span></span><br></pre></td></tr></table></figure>
+<h2 id="案例应用"><a href="#案例应用" class="headerlink" title="案例应用"></a>案例应用</h2><h3 id="案例1：-Leetcode-424"><a href="#案例1：-Leetcode-424" class="headerlink" title="案例1： Leetcode 424"></a>案例1： Leetcode 424</h3><p>Medium: <a href="https://leetcode.com/problems/longest-repeating-character-replacement/" target="_blank" rel="noopener">Longest Repeating Character Replacement </a></p>
+<p>给定一个字符串 s 和整数  k，求 s 变换 k 次后得到的最长重复子串是多长。其中变换规律是：每次操作可以将一个字符变化成任意字符。重复字符串是指所有字符都相同的字符串。</p>
+<p><code>end</code> 每次滑动要做啥：</p>
+<p>累计 s[end] 出现的次数。如果 s[end] 出现次数大于了窗口中最大重复次数，则更新最大重复次数。如果窗口长度大于 k + max_count 则需要移动 begin 指针。</p>
+<p><code>begin</code> 指针移动要做啥：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">characterReplacement</span><span class="params">(self, s: str, k: int)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> s:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        begin = end = <span class="number">0</span></span><br><span class="line">        map = collections.defaultdict(int)</span><br><span class="line">        max_count = max_len = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> end &lt; len(s):</span><br><span class="line">            c = s[end]</span><br><span class="line">            map[c] += <span class="number">1</span></span><br><span class="line">            max_count = max(max_count, map[c])</span><br><span class="line">                </span><br><span class="line">            end += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">			<span class="keyword">while</span> end - begin &gt; k + max_count:</span><br><span class="line">                b = s[begin]</span><br><span class="line">                map[b] -= <span class="number">1</span></span><br><span class="line">                begin += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            max_len = max(max_len, end - begin)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> max_len</span><br></pre></td></tr></table></figure>
+<h3 id="案例2：Max-Consecutive-Ones-III"><a href="#案例2：Max-Consecutive-Ones-III" class="headerlink" title="案例2：Max Consecutive Ones III"></a>案例2：Max Consecutive Ones III</h3><p>Medium: <a href="https://leetcode.com/problems/max-consecutive-ones-iii/solution/" target="_blank" rel="noopener">https://leetcode.com/problems/max-consecutive-ones-iii/solution/</a> </p>
+<p>给定一个只有 0 和 1 的数组 A 和一个操作次数 K，每次操作可以从 0 变成 1，求在 k 次操作下最大子数组的长度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestOnes</span><span class="params">(self, A: List[int], k: int)</span> -&gt; int:</span></span><br><span class="line">        begin = end = <span class="number">0</span></span><br><span class="line">        max_len = <span class="number">0</span></span><br><span class="line">        nums_one = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> end &lt; len(A):</span><br><span class="line">            <span class="keyword">if</span> A[end] == <span class="number">1</span>:</span><br><span class="line">                nums_one += <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">            end += <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> end - begin &gt; nums_one + k:</span><br><span class="line">                <span class="keyword">if</span> A[begin] == <span class="number">1</span>:</span><br><span class="line">                    nums_one -= <span class="number">1</span></span><br><span class="line">                begin += <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">            max_len = max(max_len, end - begin)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> max_len</span><br></pre></td></tr></table></figure>
+<h3 id="案例3：Grumpy-Bookstore-Owner"><a href="#案例3：Grumpy-Bookstore-Owner" class="headerlink" title="案例3：Grumpy Bookstore Owner"></a>案例3：Grumpy Bookstore Owner</h3><p>Medium: <a href="https://leetcode.com/problems/grumpy-bookstore-owner/" target="_blank" rel="noopener">https://leetcode.com/problems/grumpy-bookstore-owner/</a> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxSatisfied</span><span class="params">(self, cus: List[int], gru: List[int], x: int)</span> -&gt; int:</span></span><br><span class="line">        init_sum = max_sum = <span class="number">0</span></span><br><span class="line">        n = len(cus)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">if</span> gru[i] == <span class="number">0</span>:</span><br><span class="line">                init_sum += cus[i]</span><br><span class="line">        </span><br><span class="line">        begin = end = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> end &lt; n:</span><br><span class="line">            <span class="keyword">if</span> gru[end] == <span class="number">1</span>:</span><br><span class="line">                init_sum += cus[end]</span><br><span class="line">            <span class="comment"># [begin, end]</span></span><br><span class="line">            <span class="keyword">while</span> end - begin == x:</span><br><span class="line">                <span class="keyword">if</span> gru[begin] == <span class="number">1</span>:</span><br><span class="line">                    init_sum -= cus[begin]</span><br><span class="line">                begin += <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">            max_sum = max(max_sum, init_sum)</span><br><span class="line">            end += <span class="number">1</span> <span class="comment"># 考虑清楚下次 end 移动之前要做哪些事情</span></span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> max_sum</span><br></pre></td></tr></table></figure>
+<h3 id="案例4：-Longest-Substring-Without-Repeating-Characters"><a href="#案例4：-Longest-Substring-Without-Repeating-Characters" class="headerlink" title="案例4：  Longest Substring Without Repeating Characters"></a>案例4：  Longest Substring Without Repeating Characters</h3><p> Medium: <a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="noopener">https://leetcode.com/problems/longest-substring-without-repeating-characters/</a> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        map = collections.defaultdict(int)</span><br><span class="line">        counter = <span class="number">0</span></span><br><span class="line">        begin = end = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        max_len = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> end &lt; len(s):</span><br><span class="line">            e = s[end]</span><br><span class="line">            map[e] += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> map[e] &gt; <span class="number">1</span>: <span class="comment"># e is repeating</span></span><br><span class="line">                counter += <span class="number">1</span> <span class="comment"># counter is number of repeating</span></span><br><span class="line">            </span><br><span class="line">            end += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">while</span> counter &gt; <span class="number">0</span>: <span class="comment"># has repeated number</span></span><br><span class="line">                b = s[begin]</span><br><span class="line">                <span class="keyword">if</span> map[b] &gt; <span class="number">1</span>:</span><br><span class="line">                    counter -= <span class="number">1</span></span><br><span class="line">                map[b] -= <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">                begin += <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">            max_len = max(max_len, end - begin)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> max_len</span><br></pre></td></tr></table></figure>
+<h3 id="案例5：-Get-Equal-Substrings-Within-Budget"><a href="#案例5：-Get-Equal-Substrings-Within-Budget" class="headerlink" title="案例5： Get Equal Substrings Within Budget"></a>案例5： Get Equal Substrings Within Budget</h3><p>Medium: <a href="https://leetcode.com/problems/get-equal-substrings-within-budget/" target="_blank" rel="noopener">https://leetcode.com/problems/get-equal-substrings-within-budget/</a> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">equalSubstring</span><span class="params">(self, s: str, t: str, cost: int)</span> -&gt; int:</span></span><br><span class="line">        begin = end = <span class="number">0</span></span><br><span class="line">        max_len = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> end &lt; len(s):</span><br><span class="line">            cost -= abs(ord(s[end]) - ord(t[end]))</span><br><span class="line">            end += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">while</span> cost &lt; <span class="number">0</span>:</span><br><span class="line">                cost += abs(ord(s[begin]) - ord(t[begin]))</span><br><span class="line">                begin += <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">            max_len = max(end - begin, max_len)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> max_len</span><br></pre></td></tr></table></figure>
+<h3 id="案例6：Permutation-in-String"><a href="#案例6：Permutation-in-String" class="headerlink" title="案例6：Permutation in String"></a>案例6：Permutation in String</h3><p>Medium: <a href="https://leetcode.com/problems/permutation-in-string/" target="_blank" rel="noopener">https://leetcode.com/problems/permutation-in-string/</a> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">checkInclusion</span><span class="params">(self, s1: str, s2: str)</span> -&gt; bool:</span></span><br><span class="line">        d = collections.Counter(s1)</span><br><span class="line">        counter = len(d)</span><br><span class="line">        </span><br><span class="line">        begin = end = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> end &lt; len(s2):</span><br><span class="line">            e = s2[end]</span><br><span class="line">            <span class="keyword">if</span> e <span class="keyword">in</span> d:</span><br><span class="line">                d[e] -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> d[e] == <span class="number">0</span>:</span><br><span class="line">                    counter -= <span class="number">1</span></span><br><span class="line">            end += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">while</span> counter == <span class="number">0</span>:</span><br><span class="line">                b = s2[begin]</span><br><span class="line">                <span class="keyword">if</span> b <span class="keyword">in</span> d:</span><br><span class="line">                    d[b] += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> d[b] &gt; <span class="number">0</span>:</span><br><span class="line">                        counter += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> end - begin == len(s1):</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">            </span><br><span class="line">                begin += <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<h3 id="案例7：-Minimum-Window-Substring"><a href="#案例7：-Minimum-Window-Substring" class="headerlink" title="案例7： Minimum Window Substring"></a>案例7： Minimum Window Substring</h3><p> <a href="https://leetcode.com/problems/minimum-window-substring/" target="_blank" rel="noopener">https://leetcode.com/problems/minimum-window-substring/</a> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minWindow</span><span class="params">(self, s: str, t: str)</span> -&gt; str:</span></span><br><span class="line">        map = collections.Counter(t)</span><br><span class="line">        </span><br><span class="line">        found = <span class="keyword">False</span></span><br><span class="line">        begin = end = <span class="number">0</span></span><br><span class="line">        counter = len(map)</span><br><span class="line">        start = <span class="number">0</span></span><br><span class="line">        min_len = len(s)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> end &lt; len(s):</span><br><span class="line">            e = s[end]</span><br><span class="line">            <span class="keyword">if</span> e <span class="keyword">in</span> map:</span><br><span class="line">                map[e] -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> map[e] == <span class="number">0</span>:</span><br><span class="line">                    counter -= <span class="number">1</span></span><br><span class="line">            end += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">while</span> counter == <span class="number">0</span>:</span><br><span class="line">                found = <span class="keyword">True</span></span><br><span class="line">                b = s[begin]</span><br><span class="line">                <span class="keyword">if</span> b <span class="keyword">in</span> map:</span><br><span class="line">                    map[b] += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> map[b] &gt; <span class="number">0</span>:</span><br><span class="line">                        counter += <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> end - begin &lt; min_len:</span><br><span class="line">                    min_len = end - begin</span><br><span class="line">                    start = begin</span><br><span class="line">                    </span><br><span class="line">                begin += <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> s[start: start + min_len] <span class="keyword">if</span> found <span class="keyword">else</span> <span class="string">""</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+    
+    
+<div class="my_post_copyright">
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+<!-- JS库 sweetalert 可修改路径 -->
+<script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+<script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+<p><span>本文标题:</span><a href="/fundamental/algorithm/lc-sliding-window-template/">滑动窗口解题模板</a></p>
+<p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
+<p><span>发布时间:</span>2019年10月24日 - 19:10</p>
+<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>原始链接:</span><a href="/fundamental/algorithm/lc-sliding-window-template/" title="滑动窗口解题模板">https://0x400.com/fundamental/algorithm/lc-sliding-window-template/</a>
+<span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/fundamental/algorithm/lc-sliding-window-template/" aria-label="复制成功！"></i></span>
+</p>
+<p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+var clipboard = new Clipboard('.fa-clipboard');
+clipboard.on('success', $(function(){
+    $(".fa-clipboard").click(function(){
+        swal({   
+            title: "",   
+            text: '复制成功',   
+            html: false,
+            timer: 500,   
+            showConfirmButton: false
+        });
+
+    });
+
+}));  
+</script>
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sliding-window/" rel="tag"><i class="fa fa-tag"></i> Sliding Window</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/fundamental/algorithm/lc-650-2-keys-keyboard/" rel="next" title="Leetcode-650 —— 2 Keys Keyboard">
+                <i class="fa fa-chevron-left"></i> Leetcode-650 —— 2 Keys Keyboard
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/fundamental/algorithm/lc-binary-search-template/" rel="prev" title="二分法解题模板">
+                二分法解题模板 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/us.jpg" alt="Pylon, Syncher">
+          <p class="site-author-name" itemprop="name">Pylon, Syncher</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/brelain" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:syncviip@gmail.com" target="_blank" title="GMail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      GMail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://leetcode.com/syncviip" target="_blank" title="LeetCode">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      LeetCode
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://dyoung.unnnnn.com/" title="东阳兄" target="_blank">东阳兄</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目要求"><span class="nav-number">1.</span> <span class="nav-text">题目要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解题模板"><span class="nav-number">2.</span> <span class="nav-text">解题模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例应用"><span class="nav-number">3.</span> <span class="nav-text">案例应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#案例1：-Leetcode-424"><span class="nav-number">3.1.</span> <span class="nav-text">案例1： Leetcode 424</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例2：Max-Consecutive-Ones-III"><span class="nav-number">3.2.</span> <span class="nav-text">案例2：Max Consecutive Ones III</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例3：Grumpy-Bookstore-Owner"><span class="nav-number">3.3.</span> <span class="nav-text">案例3：Grumpy Bookstore Owner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例4：-Longest-Substring-Without-Repeating-Characters"><span class="nav-number">3.4.</span> <span class="nav-text">案例4：  Longest Substring Without Repeating Characters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例5：-Get-Equal-Substrings-Within-Budget"><span class="nav-number">3.5.</span> <span class="nav-text">案例5： Get Equal Substrings Within Budget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例6：Permutation-in-String"><span class="nav-number">3.6.</span> <span class="nav-text">案例6：Permutation in String</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例7：-Minimum-Window-Substring"><span class="nav-number">3.7.</span> <span class="nav-text">案例7： Minimum Window Substring</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pylon, Syncher</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+ Hosted by <a href="#" style="font-weight: bold">GitHub && Coding.net</a>
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+  <!-- 背景动画 -->
+  <script type="text/javascript" src="/js/src/particle.js"></script>
+</html>

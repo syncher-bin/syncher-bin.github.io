@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Noto Sans SC:300,300italic,400,400italic,700,700italic|Noto Sans SC:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="PHP,Nginx,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="看完这篇文章，你可以知道  PHP-CGI 是 PHP 解析器 CGI 是一种协议 Fast-CGI  是 CGI 的一个变种 PHP-FPM 是对 Fast-CGI 的实现，是对 PHP-CGI 进程的管理 Nginx 和 PHP-FPM 之间的通信方式">
+<meta name="keywords" content="PHP,Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx 与 PHP-FPM 通信机制">
+<meta property="og:url" content="https://0x400.com/experience/practice/linux-nginx-fpm-communication-explaination/index.html">
+<meta property="og:site_name" content="Pylon&#39;s Blog">
+<meta property="og:description" content="看完这篇文章，你可以知道  PHP-CGI 是 PHP 解析器 CGI 是一种协议 Fast-CGI  是 CGI 的一个变种 PHP-FPM 是对 Fast-CGI 的实现，是对 PHP-CGI 进程的管理 Nginx 和 PHP-FPM 之间的通信方式">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://0x400.com/images/20180331/Nginx-fpm-Communitacion.png">
+<meta property="og:image" content="https://0x400.com/images/20180331/FPM-Nginx-TCP-Unix.png">
+<meta property="og:updated_time" content="2021-01-30T02:33:14.384Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx 与 PHP-FPM 通信机制">
+<meta name="twitter:description" content="看完这篇文章，你可以知道  PHP-CGI 是 PHP 解析器 CGI 是一种协议 Fast-CGI  是 CGI 的一个变种 PHP-FPM 是对 Fast-CGI 的实现，是对 PHP-CGI 进程的管理 Nginx 和 PHP-FPM 之间的通信方式">
+<meta name="twitter:image" content="https://0x400.com/images/20180331/Nginx-fpm-Communitacion.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://0x400.com/experience/practice/linux-nginx-fpm-communication-explaination/">
+
+
+
+
+
+  <title>Nginx 与 PHP-FPM 通信机制 | Pylon's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b7188e764feaf5a9c6e9c033ee3d814b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pylon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/?v=k_MmoGDGjJ8" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于作者
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://0x400.com/experience/practice/linux-nginx-fpm-communication-explaination/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pylon, Syncher">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/us.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pylon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Nginx 与 PHP-FPM 通信机制</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T22:23:19+08:00">
+                2018-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/experience/" itemprop="url" rel="index">
+                    <span itemprop="name">Experience</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/experience/practice/" itemprop="url" rel="index">
+                    <span itemprop="name">Practice</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>看完这篇文章，你可以知道</p>
+<ul>
+<li>PHP-CGI 是 PHP 解析器</li>
+<li>CGI 是一种协议</li>
+<li>Fast-CGI  是 CGI 的一个变种</li>
+<li>PHP-FPM 是对 Fast-CGI 的实现，是对 PHP-CGI 进程的管理</li>
+<li>Nginx 和 PHP-FPM 之间的通信方式</li>
+</ul>
+<a id="more"></a>
+<h2 id="Nginx-与-PHP-FPM"><a href="#Nginx-与-PHP-FPM" class="headerlink" title="Nginx 与 PHP-FPM"></a>Nginx 与 PHP-FPM</h2><p>Nginx（服务器）是内容的分发者，Nginx 启动后会监听某个指定的端口，等待客户端请求。如果通过解析 URI 得知客户端请求的是<code>/index.html</code>文件，服务器会去文件系统中找到这个文件，发送给浏览器，这里分发的是静态数据。如果现在请求的是<code>/index.php</code>，根据配置文件，服务器知道这不是静态文件，需要去找 <strong>PHP 解析器 （PHP-CGI）</strong>来处理。PHP-CGI 收到<code>/index.php</code>这个请求后，会解析 php.ini 文件，初始化执行环境，然后处理请求，再以规定 CGI 规定的格式返回处理后的结果，退出进程。Nginx 再把结果返回给浏览器。</p>
+<p>Nginx 调用 PHP-CGI 时会传第必要的信息如 URI、URL 参数、POST、HTTP header 等，<a href="[https://tools.ietf.org/html/rfc3875](https://tools.ietf.org/html/rfc3875"><strong>通用网关接口 （CGI ）</strong></a> )规定了从 Nginx 到 PHP-CGI 之间的数据传输格式。</p>
+<p>PHP-CGI 接收到 CGI 传来的数据后：环境初始化 –&gt; 处理请求 –&gt; 返回结果 –&gt; 杀死进程 。每个请求都将对应一个 PHP-CGI 进程，因此导致服务器性能下降，并发不高。因此出现了一种新的协议叫 <strong><a href="https://en.wikipedia.org/wiki/FastCGI" target="_blank" rel="noopener">快速通用网关接口（FastCGI）</a></strong>，FastCGI 的主要目标是减少 Web 服务器和 CGI 程序之间通信的开销，允许服务器一次处理更多的网页请求。</p>
+<p> PHP-FPM  就是 FastCGI  协议的实现，对于 Fast-CGI 程序，不是每个请求都创建一个进程，PHP-FPM 会先启一个 Master 进程 –&gt; 解析配置文件 –&gt; 初始化执行环境 –&gt; 启动多个 Worker。每个 Worker 都是一个 PHP-CGI，当请求过来时，Master 会将请求交给一个 Worker，然后立即可以接受下一个请求。PHP-FPM 对 PHP-CGI 进程进行管理，当 Worker 不够用时，Master 可以根据配置预先启动几个Worker ；当然空闲 Worker 太多时，也会停掉一些，这样就提高了性能，也节约了资源。</p>
+<p><img src="/images/20180331/Nginx-fpm-Communitacion.png" alt="img"></p>
+<h2 id="Nginx-与-PHP-FPM-通信机制与配置"><a href="#Nginx-与-PHP-FPM-通信机制与配置" class="headerlink" title="Nginx 与 PHP-FPM 通信机制与配置"></a>Nginx 与 PHP-FPM 通信机制与配置</h2><p>Nginx 和 FastCGI 的通信方式有两种，一种是 TCP socket，一种是 Unix domain socket 。连接示意图如下：</p>
+<p><img src="/images/20180331/FPM-Nginx-TCP-Unix.png" alt></p>
+<h3 id="配置方式"><a href="#配置方式" class="headerlink" title="配置方式"></a>配置方式</h3><h4 id="TCP通信配置"><a href="#TCP通信配置" class="headerlink" title="TCP通信配置"></a>TCP通信配置</h4><p><strong>第一步</strong>，编辑 Nginx 配置文件 <code>/path/to/nginx/conf/your-stie.conf</code></p>
+<p>如果 PHP-FPM 和 Nginx 在同一台机器上，将 <code>fastcgi_pass</code>参数修改为<code>127.0.0.1:9000</code>，不在同一台机器时，将<code>127.0.0.1</code>替换为 PHP-FPM 所在机器的 IP， 如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.php$ &#123;</span><br><span class="line">      index index.php index.html index.htm;</span><br><span class="line">      include /etc/nginx/fastcgi_params;</span><br><span class="line">      fastcgi_pass 127.0.0.1:9000;</span><br><span class="line">      fastcgi_index index.php;</span><br><span class="line">      include fastcgi_params;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p> <strong>第二步</strong>，编辑PHP-FPM 配置文件 <code>/path/to/php/etc/php-fpm.conf</code></p>
+<p>将 <code>listen</code> 参数修改为 <code>your-php-fpm-ip:9000</code>，如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">listen = <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">9000</span></span><br></pre></td></tr></table></figure>
+<p> <strong>第三步</strong>，重启或重新载入 Nginx 和 PHP-FPM 的配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service nginx reload</span><br><span class="line"><span class="meta">#</span> kill all php-fpm</span><br><span class="line">pgrep php-fpm | xargs kill</span><br><span class="line">cd /path/to/php/sbin/ &amp;&amp; ./php-fpm</span><br></pre></td></tr></table></figure>
+<h4 id="Unix-socket-配置方式"><a href="#Unix-socket-配置方式" class="headerlink" title="Unix socket 配置方式"></a>Unix socket 配置方式</h4><p>Unix socket其实严格意义上应该叫 Unix domain socket，它是 *nix 系统进程间通信（IPC）的一种被广泛采用方式，以文件（一般是 .sock ）作为 socket 的唯一标识（描述符），需要通信的两个进程引用同一个 socket 描述符文件就可以建立通道进行通信了。</p>
+<p><strong>第一步</strong>，决定你的 socket 描述符文件的存储位置。</p>
+<p>可以放在系统的任意位置，如果想要更快的通信速度，可以放在 /dev/shm下面，这个目录是所谓的 tmpfs，是RAM 可以直接使用的区域，所以，读写速度都会很快。</p>
+<p>决定了文件位置，就要修改文件的权限了，要让 Nginx 和 PHP-FPM 对它都有读写的权限，可以这样：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo touch /dev/shm/fpm-cgi.sock</span><br><span class="line">sudo chown www-data:www-data /dev/shm/fpm-cgi.sock</span><br><span class="line">sudo chmod 666 /dev/shm/fpm-cgi.sock</span><br></pre></td></tr></table></figure>
+<p><strong>第二步</strong>，修改 PHP-FPM 配置文件 <code>/path/to/php/etc/php-fpm.conf</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">listen = /dev/shm/fpm-cgi.sock</span><br><span class="line"></span><br><span class="line">; Set listen(2) backlog. A value of '-1' means unlimited.</span><br><span class="line">; Default Value: 128 (-1 on FreeBSD and OpenBSD)</span><br><span class="line">listen.backlog = -1</span><br></pre></td></tr></table></figure>
+<p> 注意： 要注意根据并发调整 listen.backlog 参数的值，默认是128，在高并发下可以改为-1，表示可以无限使用连接，最大连接限制有操作系统层控制。如下可以修改限制：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo echo 'net.core.somaxconn = 2048' &gt;&gt; /etc/sysctl.conf</span><br><span class="line">sudo sysctl -p</span><br></pre></td></tr></table></figure>
+<p> <strong>第三步</strong>，修改 Nginx 站点配置文件 <code>/path/to/nginx/conf/your-stie.conf</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.php$ &#123;</span><br><span class="line">      index index.php index.html index.htm;</span><br><span class="line">      include /etc/nginx/fastcgi_params;</span><br><span class="line">      fastcgi_pass /dev/shm/fpm-cgi.sock;</span><br><span class="line">      fastcgi_index index.php;</span><br><span class="line">      include fastcgi_params;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p> <strong>第四步</strong>，重启或重新载入 Nginx 和 PHP-FPM 的配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service nginx reload</span><br><span class="line"><span class="meta">#</span> kill all php-fpm</span><br><span class="line">pgrep php-fpm | xargs kill</span><br><span class="line">cd /path/to/php/sbin/ &amp;&amp; ./php-fpm</span><br></pre></td></tr></table></figure>
+<h4 id="两种通信方式的分析和总结"><a href="#两种通信方式的分析和总结" class="headerlink" title="两种通信方式的分析和总结"></a>两种通信方式的分析和总结</h4><p>从原理上来说，Unix socket 方式肯定要比 TCP 的方式快而且消耗资源少，因为 TCP 需要经过本地回环驱动，还要申请临时端口。</p>
+<p>Unix socket 会显得不是那么稳定，当并发连接数爆发时，会产生大量的长时缓存，在没有面向连接协议支撑的情况下，大数据包很有可能就直接出错并不会返回异常。而 TCP 这样的面向连接的协议，多少可以保证通信的正确性和完整性。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://xieminis.me/?p=216" target="_blank" rel="noopener">http://xieminis.me/?p=216</a></p>
+<p><a href="http://www.cnblogs.com/tinywan/p/6625432.html" target="_blank" rel="noopener">http://www.cnblogs.com/tinywan/p/6625432.html</a></p>
+<p><a href="https://www.awaimai.com/371.html" target="_blank" rel="noopener">https://www.awaimai.com/371.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+    
+    
+<div class="my_post_copyright">
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+<!-- JS库 sweetalert 可修改路径 -->
+<script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+<script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+<p><span>本文标题:</span><a href="/experience/practice/linux-nginx-fpm-communication-explaination/">Nginx 与 PHP-FPM 通信机制</a></p>
+<p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
+<p><span>发布时间:</span>2018年03月31日 - 22:03</p>
+<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>原始链接:</span><a href="/experience/practice/linux-nginx-fpm-communication-explaination/" title="Nginx 与 PHP-FPM 通信机制">https://0x400.com/experience/practice/linux-nginx-fpm-communication-explaination/</a>
+<span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/experience/practice/linux-nginx-fpm-communication-explaination/" aria-label="复制成功！"></i></span>
+</p>
+<p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+var clipboard = new Clipboard('.fa-clipboard');
+clipboard.on('success', $(function(){
+    $(".fa-clipboard").click(function(){
+        swal({   
+            title: "",   
+            text: '复制成功',   
+            html: false,
+            timer: 500,   
+            showConfirmButton: false
+        });
+
+    });
+
+}));  
+</script>
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"><i class="fa fa-tag"></i> PHP</a>
+          
+            <a href="/tags/nginx/" rel="tag"><i class="fa fa-tag"></i> Nginx</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/fundamental/programming-language/php/php-codeigniter-load-database-analysis/" rel="next" title="CodeIgniter load database 分析">
+                <i class="fa fa-chevron-left"></i> CodeIgniter load database 分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/fundamental/storage/mysql-features-of-partition/" rel="prev" title="MySQL 特性之分区表">
+                MySQL 特性之分区表 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/us.jpg" alt="Pylon, Syncher">
+          <p class="site-author-name" itemprop="name">Pylon, Syncher</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/brelain" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:syncviip@gmail.com" target="_blank" title="GMail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      GMail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://leetcode.com/syncviip" target="_blank" title="LeetCode">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      LeetCode
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://dyoung.unnnnn.com/" title="东阳兄" target="_blank">东阳兄</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-与-PHP-FPM"><span class="nav-number">1.</span> <span class="nav-text">Nginx 与 PHP-FPM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-与-PHP-FPM-通信机制与配置"><span class="nav-number">2.</span> <span class="nav-text">Nginx 与 PHP-FPM 通信机制与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置方式"><span class="nav-number">2.1.</span> <span class="nav-text">配置方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP通信配置"><span class="nav-number">2.1.1.</span> <span class="nav-text">TCP通信配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Unix-socket-配置方式"><span class="nav-number">2.1.2.</span> <span class="nav-text">Unix socket 配置方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两种通信方式的分析和总结"><span class="nav-number">2.1.3.</span> <span class="nav-text">两种通信方式的分析和总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pylon, Syncher</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+ Hosted by <a href="#" style="font-weight: bold">GitHub && Coding.net</a>
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+  <!-- 背景动画 -->
+  <script type="text/javascript" src="/js/src/particle.js"></script>
+</html>

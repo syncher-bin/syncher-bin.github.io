@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Noto Sans SC:300,300italic,400,400italic,700,700italic|Noto Sans SC:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="GitHub,Coding,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="最近将博客从 Wordpress 迁移到了 Hexo，因此写了一个从 Hexo 的部署到将代码发布到 GitHub Pages 和 Coding Pages 最后启用 SSL 的双线部署教程。如果您也在折腾双线 部署，您不妨可以看看这篇文章，大概流程如下：  搭建 Hexo 写作环境  部署到 GitHub  部署到 Coding Pages  注册域名并设置 DNS 解析  启用 SSL">
+<meta name="keywords" content="GitHub,Coding">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo 双线部署启用 SSL 【不完全指北】">
+<meta property="og:url" content="https://0x400.com/experience/guide/linux-blog-deployed-in-github-and-coding/index.html">
+<meta property="og:site_name" content="Pylon&#39;s Blog">
+<meta property="og:description" content="最近将博客从 Wordpress 迁移到了 Hexo，因此写了一个从 Hexo 的部署到将代码发布到 GitHub Pages 和 Coding Pages 最后启用 SSL 的双线部署教程。如果您也在折腾双线 部署，您不妨可以看看这篇文章，大概流程如下：  搭建 Hexo 写作环境  部署到 GitHub  部署到 Coding Pages  注册域名并设置 DNS 解析  启用 SSL">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://0x400.com/images/20170803/syncher-bin.png">
+<meta property="og:image" content="https://0x400.com/images/20170803/github-pages.png">
+<meta property="og:image" content="https://0x400.com/images/20170803/click-setting.png">
+<meta property="og:image" content="https://0x400.com/images/20170803/gbin.png">
+<meta property="og:image" content="https://0x400.com/images/20170803/coding-pages.png">
+<meta property="og:image" content="https://0x400.com/images/20170803/dnspod.png">
+<meta property="og:image" content="https://0x400.com/images/20170803/dnspod-dns.png">
+<meta property="og:image" content="https://0x400.com/images/20170803/change-dns.png">
+<meta property="og:image" content="https://0x400.com/images/20170803/dns-setting.png">
+<meta property="og:image" content="https://0x400.com/images/20170803/test.png">
+<meta property="og:updated_time" content="2021-01-30T02:18:55.170Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo 双线部署启用 SSL 【不完全指北】">
+<meta name="twitter:description" content="最近将博客从 Wordpress 迁移到了 Hexo，因此写了一个从 Hexo 的部署到将代码发布到 GitHub Pages 和 Coding Pages 最后启用 SSL 的双线部署教程。如果您也在折腾双线 部署，您不妨可以看看这篇文章，大概流程如下：  搭建 Hexo 写作环境  部署到 GitHub  部署到 Coding Pages  注册域名并设置 DNS 解析  启用 SSL">
+<meta name="twitter:image" content="https://0x400.com/images/20170803/syncher-bin.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://0x400.com/experience/guide/linux-blog-deployed-in-github-and-coding/">
+
+
+
+
+
+  <title>Hexo 双线部署启用 SSL 【不完全指北】 | Pylon's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b7188e764feaf5a9c6e9c033ee3d814b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pylon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/?v=k_MmoGDGjJ8" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于作者
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://0x400.com/experience/guide/linux-blog-deployed-in-github-and-coding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pylon, Syncher">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/us.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pylon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Hexo 双线部署启用 SSL 【不完全指北】</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-03T12:41:32+08:00">
+                2017-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/experience/" itemprop="url" rel="index">
+                    <span itemprop="name">Experience</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/experience/guide/" itemprop="url" rel="index">
+                    <span itemprop="name">Guide</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近将博客从 Wordpress 迁移到了 Hexo，因此写了一个从 Hexo 的部署到将代码发布到 GitHub Pages 和 Coding Pages 最后启用 SSL 的双线部署教程。如果您也在折腾双线 部署，您不妨可以看看这篇文章，大概流程如下：</p>
+<ol start="0">
+<li><p>搭建 Hexo 写作环境</p>
+</li>
+<li><p>部署到 GitHub</p>
+</li>
+<li><p>部署到 Coding Pages</p>
+</li>
+<li><p>注册域名并设置 DNS 解析</p>
+</li>
+<li><p>启用 SSL</p>
+</li>
+</ol>
+<a id="more"></a>
+<h2 id="选择-Hexo-双线部署原因"><a href="#选择-Hexo-双线部署原因" class="headerlink" title="选择 Hexo 双线部署原因"></a>选择 Hexo 双线部署原因</h2><ul>
+<li><p>Hexo 是一个开源的博客写作框架，部署简单，当前背景下 Markdown 写作不二之选。</p>
+</li>
+<li><p>选择代码托管服务一方面是为了省去国内 VPS 空间需要域名备案的麻烦，另一方面是省钱。</p>
+</li>
+<li><p>选择选线部署是因为 GitHub Pages 自定义的域名不支持 SSL 服务。</p>
+</li>
+<li><p>此外 GitHub 在国内访问速度慢到不能接受。</p>
+</li>
+</ul>
+<p>综上述，选择 GitHub Pages + Coding Pages 双线部署，国内路线走 Coding Pages 并启用 SSL，国外路线走 GitHub，并起到备份作用。</p>
+<h2 id="Hexo-部署"><a href="#Hexo-部署" class="headerlink" title="Hexo 部署"></a>Hexo 部署</h2><h3 id="Node-安装"><a href="#Node-安装" class="headerlink" title="Node 安装"></a>Node 安装</h3><ul>
+<li><p>Linux (NVM 方式安装)</p>
+<pre><code># curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+</code></pre><p>  或者</p>
+<pre><code># wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+</code></pre><p>  脚本执行完毕后</p>
+<pre><code># nvm
+# Node Version Manager
+ Note: &lt;version&gt; refers to any version-like string nvm understands. This includes:
+- full or partial version numbers, starting with an optional &quot;v&quot; (0.10, v0.1.2, v1)
+- default (built-in) aliases: node, stable, unstable, iojs, system
+- custom aliases you define with `nvm alias foo`...
+</code></pre><p>  输出使用教程，如果失败请查阅官网：<a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">https://github.com/creationix/nvm</a></p>
+<pre><code># nvm install v7 // 安装 node 7 建议不要安装最新版，最新版 Hexo 会报错
+# node -v
+v7.10.1
+</code></pre><p>  输出版本号 Node 安装成功。</p>
+</li>
+<li><p>Windows 用户</p>
+<p>  <a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">Node 官网</a>中下载稳定版本，不建议下载最新版，最新版 Hexo 报错。下载完成后直接安装，安装时选择 <code>Add to PATH</code>。安装完毕后<code>win + r</code>输入 <code>cmd</code>：</p>
+<pre><code>node -v
+</code></pre><p>  输出版本号安装成功。如安装失败可以参考<a href="http://www.runoob.com/nodejs/nodejs-install-setup.html" target="_blank" rel="noopener">http://www.runoob.com/nodejs/nodejs-install-setup.html</a></p>
+<p>  『注』如果没有添加到环境变量，可以按照如下步骤手动添加。假设安装到 <code>D:\Dev\nodejs</code>。<code>win+r</code>输入<code>sysdm.cpl</code>，选择『高级』–&gt; 『环境变量』–&gt; 『系统变量』找到<code>path</code>点击『编辑』，在末尾添加 Node 的安装路径<code>D:\Dev\nodejs</code>和<code>C:\Users\you_computer_name\AppData\Roaming\npm</code></p>
+</li>
+</ul>
+<h3 id="Git-安装"><a href="#Git-安装" class="headerlink" title="Git 安装"></a>Git 安装</h3><ul>
+<li><p><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/00137396287703354d8c6c01c904c7d9ff056ae23da865a000" target="_blank" rel="noopener">Linux 安装 Git</a></p>
+</li>
+<li><p><a href="https://git-scm.com/book/zh/v1/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git" target="_blank" rel="noopener">Windows 安装 Git</a></p>
+</li>
+</ul>
+<p>确保 Node 和　Git 安装成功后进入下一步。</p>
+<h3 id="Hexo-部署-1"><a href="#Hexo-部署-1" class="headerlink" title="Hexo 部署"></a>Hexo 部署</h3><p>Hexo 的部署很简单，只需 3 步：</p>
+<ul>
+<li><p>安装 hexo</p>
+<pre><code>npm install -g hexo-cli
+</code></pre></li>
+<li><p>安装依赖</p>
+<pre><code># mkdir -p /home/www/hexo
+# cd /home/www/hexo`
+# hexo init   # 初始化
+# npm install # 安装依赖
+</code></pre></li>
+<li><p>部署完成</p>
+<pre><code># hexo g # 静态文件生成
+# hexo s --debug # 服务运行，正常访问 http://localhost:4000/ 则部署完成
+</code></pre><p>  部署完成后当前目录下生成下列文件：</p>
+<pre><code>.
+├── _config.yml  # 站点配置文件
+├── package.json # Node 依赖包
+├── scaffolds    # 模版 文件夹
+├── source       # 资源文件夹是存放用户资源的地方。
+|   ├── _drafts  # 草稿
+|   └── _posts   # 文章
+└── themes         # 主题
+</code></pre><p>  确保部署成功后进入下一步。</p>
+</li>
+</ul>
+<h2 id="双线部署到-GitHub-Pages-和-Coding-Pages"><a href="#双线部署到-GitHub-Pages-和-Coding-Pages" class="headerlink" title="双线部署到 GitHub Pages 和 Coding Pages"></a>双线部署到 GitHub Pages 和 Coding Pages</h2><h3 id="注册域名"><a href="#注册域名" class="headerlink" title="注册域名"></a>注册域名</h3><p>到各大域名供应商注册好你的域名，如果不知道去哪注册，你可以到<a href="http://chuangzaoshi.com/operate" target="_blank" rel="noopener">这里</a>看看。我选择的域名供应商是<a href="https://sg.godaddy.com/zh/" target="_blank" rel="noopener">狗爹</a>，成功注册到域名<a href="https://gbin.me" target="_blank" rel="noopener">gbin.me</a>，然后往下步。</p>
+<h3 id="生成-ssh-key"><a href="#生成-ssh-key" class="headerlink" title="生成 ssh-key"></a>生成 ssh-key</h3><p>配置好 ssh-key 在把代码提交到 GitHub 和 Coding 仓库时就不用输密码了，如果您已经配置过 ssh-key 了那么您可以跳过这一步。ssh 使用非对称加密，ssh-key 是一对密钥，私钥放在本地（放在 Hexo 部署的主机），公钥放在 GitHub 和 Coding 仓库。</p>
+<pre><code># cd ~/.ssh
+</code></pre><p>如果返回“… No such file or directory”，则：</p>
+<pre><code># ssh-keygen -t rsa -C &quot;your_email@youremail.com&quot;
+</code></pre><p>一直回车就行，这个过程中有个环节要求输密码，建议留空，回车就行，否则每次提交代码还得输密码，违反了初衷。</p>
+<pre><code># ls ~/.ssh
+# id_rsa  id_rsa.pub
+</code></pre><p>确保 ssh-key 生成成功后。进入下一步。</p>
+<h3 id="GitHub-准备"><a href="#GitHub-准备" class="headerlink" title="GitHub 准备"></a>GitHub 准备</h3><ul>
+<li><p>新建 GitHub 仓库，取名为<code>yourname.github.io</code>，注意<code>yourname</code>一定与当前登录的账号名保持一致，如图:</p>
+<p>  <img src="/images/20170803/syncher-bin.png" alt="仓库名称"></p>
+<p>  在浏览器中输入 <code>yourname.github.io</code> 能访问说明 Pages 服务开启成功，默认访问到仓库的介绍内容。</p>
+</li>
+<li><p>开启 Pages 服务，点击 <code>Settings</code>找到<code>GitHub Pages</code>–&gt;<code>Custom domain</code>自定义域名填写自己注册好的域名。GitHub 中添加自定义域名后会在仓库中新建一个名为 CNAME 的文件，文件内部保存了自定义域名。</p>
+<p>  <img src="/images/20170803/github-pages.png" alt="仓库名称"></p>
+<p>  在浏览器中输入 <code>yourname.github.io</code>顺利跳转到自定义域名说明自定义域名成功，继续下一步。</p>
+<p>  <strong>【注意】</strong> 自定义域名后需要在 Hexo 的根目录下的 <code>source</code> 目录下新建一个 CNAME 文件，里面保存你的域名。否则提交的时候 Hexo 目录下没有 CNAME 所以 GitHub 仓库下的 CNMAE 文件会被认为是被删除，导致每次<code>hexo  d</code> 部署的时候 GitHub 下的自定义域名失效。Coding Pages 没有这种情况。</p>
+</li>
+<li><p>配置 ssh-key<br>  点击 GitHub 头像 –&gt; <code>Settings</code>:</p>
+<p>  <img src="/images/20170803/click-setting.png" alt="设置 ssh-key"></p>
+<p>  点击左侧导航中的 <code>SSH and GPG keys</code> 选择 <code>New SSH key</code>，<code>title</code>随便填，把之前生成的公钥内容复制到 <code>key</code>下，即<code>~/.ssh</code>下的 id_rsa.pub 文件中的内容复制到 <code>key</code>中然后<code>Add SSH key</code>。</p>
+</li>
+</ul>
+<h3 id="Coding-准备"><a href="#Coding-准备" class="headerlink" title="Coding 准备"></a>Coding 准备</h3><ul>
+<li><p>新建 Coding Pages 仓库，取名和刚才建的 GitHub 仓库类似，<code>yourname.coding.me</code>,注意<code>yourname</code>一定与当前登录的账号名保持一致，如图:</p>
+<p>  <img src="/images/20170803/gbin.png" alt="仓库名称"></p>
+</li>
+<li><p>点击导航中的 <code>Pages 服务</code>，<code>部署来源</code>选择<code>master</code>。在仓库中新建文件 index.html，写入<code>hello word</code>之类的测试内容。在浏览器中输入 <code>yourname.coding.me</code> 输出内容说明 Pages 服务开启成功。</p>
+</li>
+<li><p>自定义域名，点击导航中的 <code>Pages 服务</code>，<code>自定义域名</code>中绑定自己的域名。</p>
+<p>  !<img src="/images/20170803/coding-pages.png" alt="仓库名称"></p>
+<p>  在浏览器中输入 <code>yourname.coding.me</code>顺利跳转到自定义域名说明自定义域名成功，继续下一步。</p>
+</li>
+<li><p>配置 ssh-key<br>  Coding 的 ssh-key 配置和 GitHub 相似。 点击 Coding 头像 –&gt; <code>个人设置</code>，<br>  点击左侧导航中的 <code>SSH 公钥</code> 添加即可。</p>
+</li>
+</ul>
+<h3 id="站点配置"><a href="#站点配置" class="headerlink" title="站点配置"></a>站点配置</h3><p>回到 Hexo 站点目录，修改站点配置文件<code>_config.yml</code>。</p>
+<p><strong>【注意】</strong>配置文件有两个，一个叫主题配置文件在<code>themes/_config.yml</code>，另一个叫站点配置文件，在站点根目录下。</p>
+<p>打开<code>_config.yml</code>找到<code>deploy:</code>修改为如下内容：</p>
+<pre><code>deploy:
+  type: git
+  repo:
+    github: git@github.com:syncher-bin/syncher-bin.github.io.git
+    coding: git@git.coding.net:gbin/gbin.coding.me.git
+  branch: master
+</code></pre><p>其中 <a href="mailto:``git@github.com" target="_blank" rel="noopener">``git@github.com</a>:syncher-bin/syncher-bin.github.io.git<code>和</code><a href="mailto:git@git.coding.net" target="_blank" rel="noopener">git@git.coding.net</a>:gbin/gbin.coding.me.git<code></code> 分别为 GitHub 和 Coding 的仓库地址，因为配置好了 ssh-key ，所以请选择 SSH 仓库地址。</p>
+<p><strong>【注意】</strong> deploy 的值之 Hexo 版本是这样写的：</p>
+<pre><code>deploy:
+  type: git
+  repo:
+        github: git@github.com:syncher-bin/syncher-bin.github.io.git, master
+        coding: git@git.coding.net:gbin/gbin.coding.me.git, master
+</code></pre><p>但这样写会报错：</p>
+<pre><code>FATAL fatal: remote part of refspec is not a valid name in HEAD: master
+</code></pre><h3 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h3><p>以上配置好后切换到 Hexo 站点目录，执行：</p>
+<pre><code># hexo g
+# hexo s --debug
+</code></pre><p>确保本地正常后发布：</p>
+<pre><code># hexo d
+</code></pre><h2 id="开启双线部署"><a href="#开启双线部署" class="headerlink" title="开启双线部署"></a>开启双线部署</h2><p>经历以上步骤是不是可以通过域名访问了呢，答案是否定的，因为域名还没有解析到正确的地址上。双线部署是国内请求 Coding Pages 国外请求 GitHub，因此要为域名设置解析路线，因为 Godaddy 不支持自定义解析路线，因此选择免费的 <a href="https://www.dnspod.cn" target="_blank" rel="noopener">DNSPod</a> 做 DNS 解析。</p>
+<h3 id="DNS-解析配置"><a href="#DNS-解析配置" class="headerlink" title="DNS 解析配置"></a>DNS 解析配置</h3><ul>
+<li><p>注册并登陆到 DNSPod，在控制台中选择添加域名，之后会检测域名的解析状态，如果有解析记录选择导入。</p>
+<p>  <img src="/images/20170803/dnspod.png" alt="导入解析记录"></p>
+</li>
+<li><p>用 DNSPod 提供的 DNS 服务器地址替换 Godaddy 的 DNS 服务器。</p>
+<p>  <img src="/images/20170803/dnspod-dns.png" alt="导入解析记录"></p>
+<p>  登陆 Godaddy，选择<code>域名管理</code>点击域名左上角的设置，选择管理<code>DNS</code>，在域名服务器中用 f1g1ns1.dnspod.net 和 f1g1ns2.dnspod.net 替换原来的服务器。</p>
+<p>  <img src="/images/20170803/change-dns.png" alt="导入解析记录"></p>
+</li>
+</ul>
+<h3 id="开启-Coding-Pages-中的-HTTPS"><a href="#开启-Coding-Pages-中的-HTTPS" class="headerlink" title="开启 Coding Pages 中的 HTTPS"></a>开启 Coding Pages 中的 HTTPS</h3><ul>
+<li><p>切换到 DNSPod 中添加 3 条解析记录。</p>
+<pre><code>* CNAME 默认 xxx.coding.me  600
+CNAME 默认 xxx.coding.me  600
+@ A 默认 103.72.145.7 600
+</code></pre><p>  其中 103.72.145.7 是 ping xxx.coding.me 得到的 IP，CNAME 为域名的别名，指向 Coding 仓库。</p>
+</li>
+</ul>
+<p><strong>【注意】</strong>申请证书时，解析路线必须选择默认，否则 SSL/TSL 证书会申请失败，如<a href="https://coding.net/u/coding/p/Coding-Feedback/topic/354603" target="_blank" rel="noopener">https://coding.net/u/coding/p/Coding-Feedback/topic/354603</a></p>
+<ul>
+<li>切换到 Coding 仓库中，点击 Pages 服务，选择<code>强制 HTTPS 访问</code>，点击<code>申请</code>。如果配置成功，10分钟之内即可申请下来。</li>
+</ul>
+<h3 id="开启双线部署的最后一步"><a href="#开启双线部署的最后一步" class="headerlink" title="开启双线部署的最后一步"></a>开启双线部署的最后一步</h3><p>切换到 DNSPod ，更改解析记录。</p>
+<ul>
+<li><p>添加 GitHub 解析记录，新增 4 条解析记录。</p>
+<pre><code> @    A   国外 192.30.252.153         - - 600
+
+ @    A   国外 192.30.252.154         - - 600
+
+www CNAME 国外 syncher-bin.github.io  - - 600
+</code></pre><p>  其中 192.30.252.153 和 192.30.252.154 有 <a href="https://help.github.com/articles/troubleshooting-custom-domains/" target="_blank" rel="noopener">GitHub 提供</a>。CNAME 指向 <a href="syncher-bin.github.io">syncher-bin.github.io</a></p>
+</li>
+<li><p>更改 Coding Page 解析记录。将线路类型改为国内即可。最终设置如下：</p>
+<p>  <img src="/images/20170803/dns-setting.png" alt="导入解析记录"></p>
+</li>
+</ul>
+<pre><code>红色框与 GitHub 相关， 蓝色框与 Coding 相关。
+</code></pre><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>使用 <a href="https://www.17ce.com/" target="_blank" rel="noopener">17ce</a> 测试一下，你会发现国内访问响应服务器为 Coding 提过的 IP, 国外访问响应的服务器为 GitHub 提供的 IP，至此双线部署完毕。</p>
+<p><img src="/images/20170803/test.png" alt="导入解析记录"></p>
+<h2 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h2><p>感谢开源社区的开发者和贡献者。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><p><a href="https://linghucong.js.org/2016/04/15/2016-04-15-hexo-github-pages-blog/" target="_blank" rel="noopener">https://linghucong.js.org/2016/04/15/2016-04-15-hexo-github-pages-blog/</a></p>
+</li>
+<li><p><a href="http://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+    
+    
+<div class="my_post_copyright">
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+<!-- JS库 sweetalert 可修改路径 -->
+<script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+<script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+<p><span>本文标题:</span><a href="/experience/guide/linux-blog-deployed-in-github-and-coding/">Hexo 双线部署启用 SSL 【不完全指北】</a></p>
+<p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
+<p><span>发布时间:</span>2017年08月03日 - 12:08</p>
+<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>原始链接:</span><a href="/experience/guide/linux-blog-deployed-in-github-and-coding/" title="Hexo 双线部署启用 SSL 【不完全指北】">https://0x400.com/experience/guide/linux-blog-deployed-in-github-and-coding/</a>
+<span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/experience/guide/linux-blog-deployed-in-github-and-coding/" aria-label="复制成功！"></i></span>
+</p>
+<p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+var clipboard = new Clipboard('.fa-clipboard');
+clipboard.on('success', $(function(){
+    $(".fa-clipboard").click(function(){
+        swal({   
+            title: "",   
+            text: '复制成功',   
+            html: false,
+            timer: 500,   
+            showConfirmButton: false
+        });
+
+    });
+
+}));  
+</script>
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/github/" rel="tag"><i class="fa fa-tag"></i> GitHub</a>
+          
+            <a href="/tags/coding/" rel="tag"><i class="fa fa-tag"></i> Coding</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/experience/practice/frontend-learn-about-cros/" rel="next" title="关于 CORS 跨域的一点点理解">
+                <i class="fa fa-chevron-left"></i> 关于 CORS 跨域的一点点理解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/experience/practice/dev-wolf-warriors-II-box-office-forecast/" rel="prev" title="战狼 2 票房是否会达到 40 亿？">
+                战狼 2 票房是否会达到 40 亿？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/us.jpg" alt="Pylon, Syncher">
+          <p class="site-author-name" itemprop="name">Pylon, Syncher</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/brelain" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:syncviip@gmail.com" target="_blank" title="GMail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      GMail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://leetcode.com/syncviip" target="_blank" title="LeetCode">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      LeetCode
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://dyoung.unnnnn.com/" title="东阳兄" target="_blank">东阳兄</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#选择-Hexo-双线部署原因"><span class="nav-number">1.</span> <span class="nav-text">选择 Hexo 双线部署原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo-部署"><span class="nav-number">2.</span> <span class="nav-text">Hexo 部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Node-安装"><span class="nav-number">2.1.</span> <span class="nav-text">Node 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-安装"><span class="nav-number">2.2.</span> <span class="nav-text">Git 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo-部署-1"><span class="nav-number">2.3.</span> <span class="nav-text">Hexo 部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双线部署到-GitHub-Pages-和-Coding-Pages"><span class="nav-number">3.</span> <span class="nav-text">双线部署到 GitHub Pages 和 Coding Pages</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册域名"><span class="nav-number">3.1.</span> <span class="nav-text">注册域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成-ssh-key"><span class="nav-number">3.2.</span> <span class="nav-text">生成 ssh-key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub-准备"><span class="nav-number">3.3.</span> <span class="nav-text">GitHub 准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coding-准备"><span class="nav-number">3.4.</span> <span class="nav-text">Coding 准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#站点配置"><span class="nav-number">3.5.</span> <span class="nav-text">站点配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布"><span class="nav-number">3.6.</span> <span class="nav-text">发布</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开启双线部署"><span class="nav-number">4.</span> <span class="nav-text">开启双线部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS-解析配置"><span class="nav-number">4.1.</span> <span class="nav-text">DNS 解析配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启-Coding-Pages-中的-HTTPS"><span class="nav-number">4.2.</span> <span class="nav-text">开启 Coding Pages 中的 HTTPS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启双线部署的最后一步"><span class="nav-number">4.3.</span> <span class="nav-text">开启双线部署的最后一步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">4.4.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#致谢"><span class="nav-number">5.</span> <span class="nav-text">致谢</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pylon, Syncher</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+ Hosted by <a href="#" style="font-weight: bold">GitHub && Coding.net</a>
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+  <!-- 背景动画 -->
+  <script type="text/javascript" src="/js/src/particle.js"></script>
+</html>

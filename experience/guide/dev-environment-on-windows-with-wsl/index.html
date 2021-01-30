@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Noto Sans SC:300,300italic,400,400italic,700,700italic|Noto Sans SC:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Windows,WSL,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="零、背景前段时间博主曾经写过一篇文章《Windows 10 配合 Ubuntu 搭建舒适开发环境不完全指北》，文章介绍了如何使用 Windows 配合 Ubuntu 搭建舒适的开发环境，此后博主由于一些个人因素离开了上家公司，加入了目前的公司。不巧的是，新公司默认情况下配置的电脑也是 Windows（后来听说入职之前可以向 HR 申请 MBP，但我没有申请），而且电脑一旦配发，如无损坏需用满三年才">
+<meta name="keywords" content="Windows,WSL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建基于 Windows 10 和 WSL 的开发环境不完全指南">
+<meta property="og:url" content="https://0x400.com/experience/guide/dev-environment-on-windows-with-wsl/index.html">
+<meta property="og:site_name" content="Pylon&#39;s Blog">
+<meta property="og:description" content="零、背景前段时间博主曾经写过一篇文章《Windows 10 配合 Ubuntu 搭建舒适开发环境不完全指北》，文章介绍了如何使用 Windows 配合 Ubuntu 搭建舒适的开发环境，此后博主由于一些个人因素离开了上家公司，加入了目前的公司。不巧的是，新公司默认情况下配置的电脑也是 Windows（后来听说入职之前可以向 HR 申请 MBP，但我没有申请），而且电脑一旦配发，如无损坏需用满三年才">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://0x400.com/images/2019-09/check-version.png">
+<meta property="og:image" content="https://0x400.com/images/2019-09/enable-wsl-step-1.png">
+<meta property="og:image" content="https://0x400.com/images/2019-09/enable-wsl-step-2.png">
+<meta property="og:image" content="https://0x400.com/images/2019-09/enable-wsl-step-3.png">
+<meta property="og:image" content="https://0x400.com/images/2019-09/enable-wsl-step-4.png">
+<meta property="og:image" content="https://0x400.com/images/2019-09/ubuntu-selected.png">
+<meta property="og:updated_time" content="2021-01-30T02:18:34.239Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建基于 Windows 10 和 WSL 的开发环境不完全指南">
+<meta name="twitter:description" content="零、背景前段时间博主曾经写过一篇文章《Windows 10 配合 Ubuntu 搭建舒适开发环境不完全指北》，文章介绍了如何使用 Windows 配合 Ubuntu 搭建舒适的开发环境，此后博主由于一些个人因素离开了上家公司，加入了目前的公司。不巧的是，新公司默认情况下配置的电脑也是 Windows（后来听说入职之前可以向 HR 申请 MBP，但我没有申请），而且电脑一旦配发，如无损坏需用满三年才">
+<meta name="twitter:image" content="https://0x400.com/images/2019-09/check-version.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://0x400.com/experience/guide/dev-environment-on-windows-with-wsl/">
+
+
+
+
+
+  <title>搭建基于 Windows 10 和 WSL 的开发环境不完全指南 | Pylon's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b7188e764feaf5a9c6e9c033ee3d814b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pylon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/?v=k_MmoGDGjJ8" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于作者
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://0x400.com/experience/guide/dev-environment-on-windows-with-wsl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pylon, Syncher">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/us.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pylon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">搭建基于 Windows 10 和 WSL 的开发环境不完全指南</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-23T22:01:34+08:00">
+                2019-09-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/experience/" itemprop="url" rel="index">
+                    <span itemprop="name">Experience</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/experience/guide/" itemprop="url" rel="index">
+                    <span itemprop="name">Guide</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="零、背景"><a href="#零、背景" class="headerlink" title="零、背景"></a>零、背景</h2><p>前段时间博主曾经写过一篇文章<a href="https://0x400.com/2019-07-02-dev-environment-on-windows-and-linux.html">《Windows 10 配合 Ubuntu 搭建舒适开发环境不完全指北》</a>，文章介绍了如何使用 Windows 配合 Ubuntu 搭建舒适的开发环境，此后博主由于一些个人因素离开了上家公司，加入了目前的公司。不巧的是，新公司默认情况下配置的电脑也是 Windows（后来听说入职之前可以向 HR 申请 MBP，但我没有申请），而且电脑一旦配发，如无损坏需用满三年才能更换，而我特别不喜欢使用 Windows 的 Terminal 工具。一方面是开发环境部署困难，比如安装 Python 你可能需要自行下载 Python 安装镜像然后手动安装，安装完成后可能还需要配置环境变量，几乎所有的开发工具在 Windows 下的安装都是类似的；另一方面是 Terminal 界面丑陋，用户体验较差。即使有 Git Bash，Cmder，PowerShell，choco 等一系列辅助工具，还是无法赢得很多喜欢命令行工具的程序员的青睐， 我也一样。 </p>
+<a id="more"></a>
+<p>随着 WSL 第二代和 Windows Terminal 的发布，以及几天以前微软推出了新的编程字体 <a href="https://github.com/microsoft/cascadia-code" target="_blank" rel="noopener">https://github.com/microsoft/cascadia-code</a>   ，再次给使用 Windows 作为开发机器的程序员带来了重生的希望。但是 Windows Terminal 和 WSL 第二版必须要求 Windows 发布版本大于等于 1903，目前共同公司配备的 Windows 是 1809，恰好能用 WSL 的第一版，但不能用 Windows Terminal 和 WSL 第二版。好在 Windows 1903 的版本公司正在积极定制中，应该马上能用了，可喜可贺。</p>
+<p>基于以上背景，本文记录了在 Windows 1809 版本下配合 WSL 第一版部署舒适开发环境的过程。</p>
+<h2 id="一、依赖"><a href="#一、依赖" class="headerlink" title="一、依赖"></a>一、依赖</h2><p>安装 Windows Terminal 要求必须是 <strong>Windows 10</strong>系统，且系统版本 <code>&gt;= 16237.0</code></p>
+<p>按下<code>win</code>建，输入 <code>about your PC</code> ，回车后在 <code>Windows specifications</code> 一节中查看系统版本</p>
+<p><img src="/images/2019-09/check-version.png" alt></p>
+<h2 id="二、安装-WSL"><a href="#二、安装-WSL" class="headerlink" title="二、安装 WSL"></a>二、安装 WSL</h2><h3 id="2-1-开启子系统"><a href="#2-1-开启子系统" class="headerlink" title="2.1 开启子系统"></a>2.1 开启子系统</h3><p><strong>方式一：（推荐）通过命令行开启</strong></p>
+<ol>
+<li><p>使用管理员方式打开 PowerShell 执行如下命令：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启电脑</p>
+<p>Win - R: 输入 <code>shutdown -r -t 00</code></p>
+</li>
+</ol>
+<p><strong>方式二： 使用图形化界面开启子系统功能</strong></p>
+<p>如果不是写作需要，我会更倾向使用命令行方式开启 WSL 功能，使用更少的操作完成更复杂的功能，这是程序员与生俱来的特点，因为时间是宝贵的。</p>
+<p>步骤1： 按 Win - R，输入 <code>control</code> 后回车</p>
+<p><img src="/images/2019-09/enable-wsl-step-1.png" alt></p>
+<p>步骤2： 点击 “Uninstall a program” </p>
+<p><img src="/images/2019-09/enable-wsl-step-2.png" alt></p>
+<p>步骤3： 点击 “Turn Windows features on or off “ </p>
+<p><img src="/images/2019-09/enable-wsl-step-3.png" alt></p>
+<p>步骤4：找到 “Windows Subsystem for Linux” 确保前面的选择框被选中</p>
+<p><img src="/images/2019-09/enable-wsl-step-4.png" alt></p>
+<p>重启电脑。</p>
+<h2 id="2-2-安装-Ubuntu-16-04"><a href="#2-2-安装-Ubuntu-16-04" class="headerlink" title="2.2 安装 Ubuntu 16.04"></a>2.2 安装 Ubuntu 16.04</h2><p>打开 Microsoft Store，输入 Ubuntu，选择评分最高的那个安装。</p>
+<p><img src="/images/2019-09/ubuntu-selected.png" alt></p>
+<p>安装完成后，初次打开 Ubuntu Terminal 会进行初始化，输入 Ubuntu 的账号和密码，回车后等待初始化完成即可。</p>
+<h2 id="三、WSL-初始化"><a href="#三、WSL-初始化" class="headerlink" title="三、WSL 初始化"></a>三、WSL 初始化</h2><ol>
+<li><p>替换国内源</p>
+<p>备份 <code>/etc/apt/sources.list</code> 后，使用 root 权限修改 sources.list 的内容，博主使用的是清华大学提供的镜像，内容如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line"><span class="meta">#</span> deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line"><span class="meta">#</span> deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line"><span class="meta">#</span> deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line"><span class="meta">#</span> deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span><br><span class="line"><span class="meta">#</span> deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+<p>详细信息请查阅 <a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/</a></p>
+</li>
+<li><p>更新系统</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo apt update</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 ssh</p>
+<p>系统更新完成后，默认会安装旧版 <code>openssh-server</code>， 所以需要手动卸载旧版 <code>openssh-server</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo apt remove openssh-server</span><br></pre></td></tr></table></figure>
+<p>由于旧版 <code>openssh-server</code> 配置和最新版不兼容，所以需要删除原来的配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo rm -rf /etc/ssh/*</span><br></pre></td></tr></table></figure>
+<p>安装 <code>openssh-server</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo apt install openssh-server</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>： 由于 WSL 和 Windows 共享端口，而 22 端口被 Windows 占用，所以需要手动更换 ssh 的端口或者确保 Windows 的 22 端口可用且防火墙开启 22 端口，显然更换 WSL 的 ssh 端口会简单一些，如下：</p>
+<p>打开 <code>sudo vim /etc/ssh/sshd_config</code>，将 <code>Port 22</code> 改成 <code>Port 2222</code> （或者其他可用端口）</p>
+<p>启动 ssh</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo service ssh start</span><br></pre></td></tr></table></figure>
+<p>正常启动后即可在 Windows 下使用 SSH 工具连接到 WSL，其中地址是 127.0.0.1 或者 localhost，端口和用户密码安装自定义的填写。</p>
+</li>
+<li><p>搭建开发环境</p>
+<p>根据需要，安装好 Python/Node.js/NVM/Git/Docker 等工具。</p>
+<p><strong>注意</strong>： WSL 第一版中并没有使用真正的 Linux 的内核，因此导致 Dockerd 不可用，如需使用 Dockerd，请使用 WSL 2，具体参考 <a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-about" target="_blank" rel="noopener">https://docs.microsoft.com/en-us/windows/wsl/wsl2-about</a></p>
+</li>
+<li><p>初始化项目</p>
+<p>WSL 初始化完成后，将 Windows 的某个盘（如 d）划分为开发盘，Windows 的所有磁盘会被挂在到 <code>/mnt/</code> 目录下，进入 <code>/mnt/d/</code> 工作目录，克隆项目到此处，开始愉快的开发。:)</p>
+<p><strong>备注</strong>： 挂载在 WSL 下的 Windows 目录会带有绿色背景，这种色调对我来讲特别不舒服，就像是总在提示我不是真正的 Linux 文件系统，而是 Windows 挂在进来的 NTFS 系统一样。为了去掉绿色背景，我改了一下目录配色方案：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> touch ~/.dir_colors</span><br><span class="line"><span class="meta">$</span> echo "OTHER_WRITABLE 35;40" &gt; ~/.dir_colors</span><br></pre></td></tr></table></figure>
+<p>在 <code>.bashrc</code> 末位添加一行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval `dircolors $HOME/.dir_colors`</span><br></pre></td></tr></table></figure>
+<p>source 一下 <code>.bashrc</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> source ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>WSL 和项目初始化完成后，在 Windows 机器下使用相应编辑器或者 IDE 进行开发，开发完成后，在WSL中编译运行，爽哉！特别是最近在 VS Code 对 WSL 原生支持后，中小项目甚至可以将项目目录直接放在 WSL 里面，参考 <a href="https://code.visualstudio.com/docs/remote/wsl，只不多这种方式只能应付中小型项目，项目大到一定程度时可能需要专业的开发工具，如" target="_blank" rel="noopener">https://code.visualstudio.com/docs/remote/wsl，只不多这种方式只能应付中小型项目，项目大到一定程度时可能需要专业的开发工具，如</a> WebStorm 。像 WebStorm 这类开发工具对 WSL 没有原生支持，无法打开（WSL的目录可以在Windows中被编辑，但是不能这样做，这样会导致权限出错）在 WSL 里面的项目，如果项目目录在 WSL 里面，这时要在 Windows 下开发就必须将 WSL 里的目录映射到 Windows 上，Samba 服务可以实现。<strong>经过笔者的实践表明，小项目使用何种方式开发都可以，当项目大一定程度后， VS Code 已经无法智能补全了，这时候使用 IDE 也许是更好的选择。这种场景下，使用 WebStorm 打开 Samba 共享出来的项目目录开发会变得异常卡顿，所以最优的选择还是直接将项目放在 Windows 下，使用 IDE 直接打开 NTFS 系统中的项目文件，然后挂载进 WSL 中编译运行。</strong></p>
+<p><strong>提示</strong>：在 Windows 中使用 IDE 开发项目时，可以将 IDE 的 Terminal 绑定成 WSL，如<a href="https://stackoverflow.com/questions/51912772/how-to-use-wsl-as-default-terminal-in-webstorm-or-any-other-jetbrains-products" target="_blank" rel="noopener">JetBrains 设置 Teminal 为 WSL</a></p>
+<h2 id="四、踩过的坑"><a href="#四、踩过的坑" class="headerlink" title="四、踩过的坑"></a>四、踩过的坑</h2><ol>
+<li>openssh-server  新旧版本配置不兼容，需删除旧配置再安装新版本</li>
+<li>Ubuntu 18.04 的 WSL 无法安装 Samba 服务，Samba 服务在  WSL 下安装异常复杂，需要关闭 Windows 下的一些服务，释放占用的 139 和 445 端口。</li>
+<li>VS Code Remote + WSL 开发方式只适用于小项目，大型项目背景下， VS Code 索引文件不太友好，智能提示几乎崩溃</li>
+<li>WSL + Samba + WebStorm 在大项目背景下开发异常卡顿，甚至卡死。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+    
+    
+<div class="my_post_copyright">
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+<!-- JS库 sweetalert 可修改路径 -->
+<script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+<script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+<p><span>本文标题:</span><a href="/experience/guide/dev-environment-on-windows-with-wsl/">搭建基于 Windows 10 和 WSL 的开发环境不完全指南</a></p>
+<p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
+<p><span>发布时间:</span>2019年09月23日 - 22:09</p>
+<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>原始链接:</span><a href="/experience/guide/dev-environment-on-windows-with-wsl/" title="搭建基于 Windows 10 和 WSL 的开发环境不完全指南">https://0x400.com/experience/guide/dev-environment-on-windows-with-wsl/</a>
+<span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/experience/guide/dev-environment-on-windows-with-wsl/" aria-label="复制成功！"></i></span>
+</p>
+<p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+var clipboard = new Clipboard('.fa-clipboard');
+clipboard.on('success', $(function(){
+    $(".fa-clipboard").click(function(){
+        swal({   
+            title: "",   
+            text: '复制成功',   
+            html: false,
+            timer: 500,   
+            showConfirmButton: false
+        });
+
+    });
+
+}));  
+</script>
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/windows/" rel="tag"><i class="fa fa-tag"></i> Windows</a>
+          
+            <a href="/tags/wsl/" rel="tag"><i class="fa fa-tag"></i> WSL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/fundamental/algorithm/lc-938-range-sum-of-bst/" rel="next" title="Leetcode-938 Range Sum of BST">
+                <i class="fa fa-chevron-left"></i> Leetcode-938 Range Sum of BST
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/fundamental/programming-language/javascript/dev-implement-promise-step-by-step/" rel="prev" title="JavaScipr 异步和 Promise">
+                JavaScipr 异步和 Promise <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/us.jpg" alt="Pylon, Syncher">
+          <p class="site-author-name" itemprop="name">Pylon, Syncher</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/brelain" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:syncviip@gmail.com" target="_blank" title="GMail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      GMail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://leetcode.com/syncviip" target="_blank" title="LeetCode">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      LeetCode
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://dyoung.unnnnn.com/" title="东阳兄" target="_blank">东阳兄</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#零、背景"><span class="nav-number">1.</span> <span class="nav-text">零、背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、依赖"><span class="nav-number">2.</span> <span class="nav-text">一、依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、安装-WSL"><span class="nav-number">3.</span> <span class="nav-text">二、安装 WSL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-开启子系统"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 开启子系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-安装-Ubuntu-16-04"><span class="nav-number">4.</span> <span class="nav-text">2.2 安装 Ubuntu 16.04</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、WSL-初始化"><span class="nav-number">5.</span> <span class="nav-text">三、WSL 初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、踩过的坑"><span class="nav-number">6.</span> <span class="nav-text">四、踩过的坑</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pylon, Syncher</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+ Hosted by <a href="#" style="font-weight: bold">GitHub && Coding.net</a>
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+  <!-- 背景动画 -->
+  <script type="text/javascript" src="/js/src/particle.js"></script>
+</html>

@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Noto Sans SC:300,300italic,400,400italic,700,700italic|Noto Sans SC:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="XHR,INVALID_STATE_ERR">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="本文记录了 INVALID_STATE_ERR 排查过程。项目前端使用 SAPUI5 开发，运行集成测试时，所有的 AJAX 请求都会被 Mock。今天遇到一个问题，一些 URL 改动后集成测试运行失败， 报了个 INVALID_STATE_ERR 的错误。">
+<meta name="keywords" content="XHR,INVALID_STATE_ERR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="INVALID_STATE_ERR Debug 记录">
+<meta property="og:url" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/index.html">
+<meta property="og:site_name" content="Pylon&#39;s Blog">
+<meta property="og:description" content="本文记录了 INVALID_STATE_ERR 排查过程。项目前端使用 SAPUI5 开发，运行集成测试时，所有的 AJAX 请求都会被 Mock。今天遇到一个问题，一些 URL 改动后集成测试运行失败， 报了个 INVALID_STATE_ERR 的错误。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/mockserver-start-up.png">
+<meta property="og:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/mockserver-start.png">
+<meta property="og:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/mockserver-start-1.png">
+<meta property="og:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/error-info.png">
+<meta property="og:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/set-response-headers.png">
+<meta property="og:updated_time" content="2021-01-30T02:18:08.941Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="INVALID_STATE_ERR Debug 记录">
+<meta name="twitter:description" content="本文记录了 INVALID_STATE_ERR 排查过程。项目前端使用 SAPUI5 开发，运行集成测试时，所有的 AJAX 请求都会被 Mock。今天遇到一个问题，一些 URL 改动后集成测试运行失败， 报了个 INVALID_STATE_ERR 的错误。">
+<meta name="twitter:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/mockserver-start-up.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/">
+
+
+
+
+
+  <title>INVALID_STATE_ERR Debug 记录 | Pylon's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b7188e764feaf5a9c6e9c033ee3d814b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pylon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/?v=k_MmoGDGjJ8" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于作者
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pylon, Syncher">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/us.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pylon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">INVALID_STATE_ERR Debug 记录</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-28T21:08:34+08:00">
+                2020-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/experience/" itemprop="url" rel="index">
+                    <span itemprop="name">Experience</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/experience/debugging/" itemprop="url" rel="index">
+                    <span itemprop="name">Debugging</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  本文记录了 INVALID_STATE_ERR 排查过程。项目前端使用 SAPUI5 开发，运行集成测试时，所有的 AJAX 请求都会被 Mock。今天遇到一个问题，一些 URL 改动后集成测试运行失败， 报了个 INVALID_STATE_ERR 的错误。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>项目前端使用 SAPUI5 开发，运行集成测试时，所有的 AJAX 请求都会被 Mock。今天遇到一个问题，一些 URL 改动后集成测试运行失败， 报错信息如下：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Uncaught Error: INVALID_STATE_ERR - 4</span><br><span class="line">    at k (sinon.js:184)</span><br><span class="line">    at F.setResponseHeaders (sinon.js:184)</span><br><span class="line">    at F.respond (sinon.js:184)</span><br><span class="line">    at F.window.sinon.FakeXMLHttpRequest.respondJSON (MockServer-dbg.js:3834)</span><br><span class="line">    at mockserver.js:298</span><br><span class="line">    at Array.some (&lt;anonymous&gt;)</span><br><span class="line">    at Object.response (mockserver.js:284)</span><br><span class="line">    at F.b (sinon.js:196)</span><br><span class="line">    at F.processRequest (sinon.js:196)</span><br><span class="line">    at F.respond (sinon.js:196)</span><br></pre></td></tr></table></figure>
+<p>本文记录了该错误的排查过程，方便今后查阅。<br><a id="more"></a></p>
+<p>尝试 Google Search，关键词 <code>INVALID_STATE_ERR</code>，只搜到一些不是很相关的答案</p>
+<ul>
+<li><a href="https://blogs.sap.com/2016/11/17/opa5-testing-with-json-backend/" target="_blank" rel="noopener">https://blogs.sap.com/2016/11/17/opa5-testing-with-json-backend/</a></li>
+<li><a href="https://github.com/sinonjs/sinon/issues/493" target="_blank" rel="noopener">https://github.com/sinonjs/sinon/issues/493</a></li>
+</ul>
+<p>转化思路 - Bug 是发生在 SAPUI5 的 MockServer 中，由于我对 MockServer 并不了解，因此我决定深入一下  MockServer</p>
+<h3 id="查阅-API-文档"><a href="#查阅-API-文档" class="headerlink" title="查阅 API 文档"></a>查阅 API 文档</h3><p>打开 SAPUI5 API 文档，找到 <a href="https://sapui5.hana.ondemand.com/#/api/sap.ui.core.util.MockServer" target="_blank" rel="noopener">MockServer</a>， 这个对象继承自 ManagedObject，至于 ManagedObject 是干嘛的我目前还不太清楚，但是我决定先跳过这个细节。</p>
+<p>MockServer 用来 Mock HTTP 请求。往下看 <code>Constructor</code> 用于创建一个 mocked server，可以 Mock XHR 和 OData/JSON Models。虽然我对 OData 还不是很懂，但是这应该与这个 BUG 关系不大，所以我跳过这个细节。Constructor 接受一些配置参数，</p>
+<ul>
+<li><code>rootUri</code> </li>
+<li><code>requests</code></li>
+<li><code>recordRequests</code> </li>
+</ul>
+<p>rootUri 是根路径，具体怎么用暂时比较模糊，稍后通过查阅源码来确定。requests 是一个数组，存放了被 mock 的请求（大致理解，稍后确认）。至于 recordRequests 是请求性能分析相关的，暂时忽略。</p>
+<p>基于以上理解，一个 MockServer demo 如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> aReqs = [];</span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span> add mocked requests</span></span><br><span class="line"><span class="keyword">var</span> oMockServer = <span class="keyword">new</span> MockServer(&#123;</span><br><span class="line">    rootUri: <span class="string">'./'</span>,</span><br><span class="line">    requests: aReqs</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">oMockServer.start();</span><br></pre></td></tr></table></figure>
+<p>继续阅读 API 文档，Events 部分暂时跳过，来到 Methods 部分，项目中使用到了 <a href="https://sapui5.hana.ondemand.com/api/sap.ui.core.util.MockServer#methods/sap.ui.core.util.MockServer.config" target="_blank" rel="noopener">sap.ui.core.util.MockServer.config</a> 方法，该方法接受一个配置对象，其中几个属性如下：</p>
+<ul>
+<li>autoRespond</li>
+<li>autoRespondAfter</li>
+<li>fakeHTTPMethod</li>
+</ul>
+<p>项目中的配置是 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    autoRespond: <span class="literal">true</span>,</span><br><span class="line">    autoRespondAfter: (oUriParameters.get(<span class="string">"serverDelay"</span>) </span><br><span class="line">    || <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (<span class="number">1501</span> - <span class="number">200</span>) + <span class="number">200</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并有注释说明，autoRespondAfter 加随机数是用于模拟真实环境的网络时延，其中 <code>oUriParameters</code> 如下定义：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> oUriParameters = <span class="keyword">new</span> UriParameters(<span class="built_in">window</span>.location.href);</span><br></pre></td></tr></table></figure>
+<h3 id="看个-Demo"><a href="#看个-Demo" class="headerlink" title="看个 Demo"></a>看个 Demo</h3><p>看完文档，还是比较模糊，下一步我需要看个 Demo，本来我可以直接看项目中的 MockServer，只不过项目中的 MockServer 是比较复杂的，不利于理解。</p>
+<p>根据<a href="https://sapui5.hana.ondemand.com/#/topic/bae9d90d2e9c4206889368f04edab508" target="_blank" rel="noopener">官方 Demo</a> 画了个流程图，</p>
+<p><img src="images/2020-05/mockserver-start-up.png" alt></p>
+<p>其中用到了 simulate 的方法。</p>
+<h3 id="深入源码"><a href="#深入源码" class="headerlink" title="深入源码"></a>深入源码</h3><p>至此，我对 MockServer 有了一知半解，但是我还不知道 <code>rootUri</code>, <code>requests</code> 和 <code>autoRespond</code> 的具体逻辑，所以我决定去看看 MockServer 的源码。克隆 openui5</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> git clone https://github.com/SAP/openui5.git</span><br></pre></td></tr></table></figure>
+<p>找到 <code>src/sap.ui.core/src/sap/ui/core/util/MockServer.js</code> </p>
+<p>从 start 方法开始分析， 我们可以发现 start 方法会调 <code>sinon.fakeServer.create</code> 创建一个 FakeServer，然后再注册 mocked requests. 所以接下来我需要了解一下 sinon.fakeServer.</p>
+<p><img src="images/2020-05/mockserver-start.png" alt></p>
+<p>打开 sinon API 文档，找到<a href="https://sinonjs.org/releases/latest/fake-xhr-and-server/" target="_blank" rel="noopener">FakeServer</a>，使用很简单，直接看如下 demo，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    setUp: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.server = sinon.createFakeServer();</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    tearDown: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.server.restore();</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="string">"test should fetch comments from server"</span> : <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.server.respondWith(<span class="string">"GET"</span>, <span class="string">"/some/article/comments.json"</span>,</span><br><span class="line">            [<span class="number">200</span>, &#123; <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span> &#125;,</span><br><span class="line">             <span class="string">'[&#123; "id": 12, "comment": "Hey there" &#125;]'</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> callback = sinon.spy();</span><br><span class="line">        myLib.getCommentsFor(<span class="string">"/some/article"</span>, callback);</span><br><span class="line">        <span class="keyword">this</span>.server.respond();</span><br><span class="line"></span><br><span class="line">        sinon.assert.calledWith(callback, [&#123; <span class="attr">id</span>: <span class="number">12</span>, <span class="attr">comment</span>: <span class="string">"Hey there"</span> &#125;]);</span><br><span class="line"></span><br><span class="line">        assert(server.requests.length &gt; <span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中两个 <code>respondWith</code> 和 <code>respond</code> 这两个方法需要我重点关注。回到 <code>MockServer.js</code> 的源码发现，<code>_addRequestHanlder</code> 方法最终调用 <code>respondWith</code> (3446 行附近)，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>._oServer.respondWith(sMethod, oRegExp, fnResponse);</span><br></pre></td></tr></table></figure>
+<p>从 API 文档得知，正则匹配到的 HTTP 方法将调用 <code>fnResponse</code>，由该方法手动处理响应。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server.respondWith(<span class="string">"GET"</span>, /\/todo-items\/(\d+)/, <span class="function"><span class="keyword">function</span> (<span class="params">xhr, id</span>) </span>&#123;</span><br><span class="line">    xhr.respond(<span class="number">200</span>, &#123; <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span> &#125;, <span class="string">'[&#123; "id": '</span> + id + <span class="string">" &#125;]"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>When the response is a <code>Function</code>, it will be passed the request object. You must manually call <a href="https://sinonjs.org/releases/latest/fake-xhr-and-server/#serverrespond" target="_blank" rel="noopener">respond</a> on it to complete the request.</p>
+</blockquote>
+<p>文档还说，如果 <code>respondeWith</code> 中传递的<code>response</code>是一个回调函数，那么执行回调时会传递 xhr 对象，并且需要回调手动调用 <code>xhr.respond</code> 方法发动响应。</p>
+<p>现在，回头看项目中的 MockServer 的代码，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> aReqs = [];</span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span> add mocked requests</span></span><br><span class="line"><span class="keyword">var</span> oMockServer = <span class="keyword">new</span> MockServer(&#123;</span><br><span class="line">    rootUri: <span class="string">'./'</span>,</span><br><span class="line">    requests: aReqs</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">oMockServer.start();</span><br></pre></td></tr></table></figure>
+<p>其中还有一个循环将所有的 request 添加到 aReqs 中，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aReqs.push(createRequest(data));</span><br></pre></td></tr></table></figure>
+<p>再看 <code>createRequest(data)</code> 方法，该方法返回一个对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createRequest</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> oRequest = &#123;</span><br><span class="line">        <span class="comment">// ... some code here</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> oRequest;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个对象被 <code>MockerServer.js</code> 的 start 方法消费，看源码</p>
+<p><img src="images/2020-05/mockserver-start-1.png" alt></p>
+<p>该对象提供了 <code>respondWith</code> 中需要的三个参数，即 method, path 和 response。</p>
+<p>至此， 我已经看懂了整个 MockServer 的过程了，再回头看错误信息，</p>
+<p><img src="images/2020-05/error-info.png" alt></p>
+<h3 id="看懂错误信息"><a href="#看懂错误信息" class="headerlink" title="看懂错误信息"></a>看懂错误信息</h3><p>错误由 XMLHttpRequest 对象引起，因此需要查阅 XHR 的 <a href="https://www.w3.org/TR/XMLHttpRequest1/" target="_blank" rel="noopener">API 文档</a>，搜索关键词 <code>INVALID_STATE_ERR</code> 共发现 8 处，</p>
+<blockquote>
+<p>Throws an <code>INVALID_STATE_ERR</code> exception if the state is not <a href="https://www.w3.org/TR/XMLHttpRequest1/#dom-xmlhttprequest-opened" target="_blank" rel="noopener">OPENED</a> or if the <a href="https://www.w3.org/TR/XMLHttpRequest1/#send-flag" target="_blank" rel="noopener"><code>send()</code> flag</a> is true.</p>
+</blockquote>
+<p>也就是说如果 XHR 的状态如果是 not opend 或者是已经 send 后的状态，那么就会抛出该异常。</p>
+<p>结合错误信息给出的函数调用栈很容易定位出该错误发生在 <code>setRespinseHeaders</code> 之后，打开 sinon 源码去看 setResponseHeader 的实现，发现有个 verifyRequestOpend 方法。</p>
+<p><img src="images/2020-05/set-response-headers.png" alt></p>
+<p>再进入 verifyRequestOpend 方法一看，果然是从这里抛出的异常，异常原因就是 xhr 的状态已经变成 4 了，4 代表 DONE，详细状态参考<a href="https://www.w3.org/TR/XMLHttpRequest1/#dom-xmlhttprequest-done" target="_blank" rel="noopener">这里</a>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">verifyRequestOpened</span>(<span class="params">xhr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (xhr.readyState != FakeXMLHttpRequest.OPENED) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"INVALID_STATE_ERR - "</span> + xhr.readyState);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>说明 298 行执行 <code>xhr.resondJSON</code> 之前已经执行过 <code>xhr.send</code> 方法了。</p>
+<h3 id="DEBUG"><a href="#DEBUG" class="headerlink" title="DEBUG"></a>DEBUG</h3><p>基于以上理解，打断点追踪一下就很容易发现代码逻辑有问题了（当然，这个代码不是本人写的，甩锅……）。</p>
+<p>以上，记录一次 Debug 的过程。</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+    
+    
+<div class="my_post_copyright">
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+<!-- JS库 sweetalert 可修改路径 -->
+<script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+<script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+<p><span>本文标题:</span><a href="/experience/debugging/dev-invalid-state-error-debug-log/">INVALID_STATE_ERR Debug 记录</a></p>
+<p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
+<p><span>发布时间:</span>2020年05月28日 - 21:05</p>
+<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>原始链接:</span><a href="/experience/debugging/dev-invalid-state-error-debug-log/" title="INVALID_STATE_ERR Debug 记录">https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/</a>
+<span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/" aria-label="复制成功！"></i></span>
+</p>
+<p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+var clipboard = new Clipboard('.fa-clipboard');
+clipboard.on('success', $(function(){
+    $(".fa-clipboard").click(function(){
+        swal({   
+            title: "",   
+            text: '复制成功',   
+            html: false,
+            timer: 500,   
+            showConfirmButton: false
+        });
+
+    });
+
+}));  
+</script>
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/xhr/" rel="tag"><i class="fa fa-tag"></i> XHR</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/fundamental/network/http/dev-http-caching/" rel="next" title="HTTP 缓存不完全指南">
+                <i class="fa fa-chevron-left"></i> HTTP 缓存不完全指南
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/experience/guide/dev-getting-started-with-sapui5/" rel="prev" title="搭建 SAPUI5 开发环境">
+                搭建 SAPUI5 开发环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/us.jpg" alt="Pylon, Syncher">
+          <p class="site-author-name" itemprop="name">Pylon, Syncher</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/brelain" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:syncviip@gmail.com" target="_blank" title="GMail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      GMail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://leetcode.com/syncviip" target="_blank" title="LeetCode">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      LeetCode
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://dyoung.unnnnn.com/" title="东阳兄" target="_blank">东阳兄</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#查阅-API-文档"><span class="nav-number">1.</span> <span class="nav-text">查阅 API 文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#看个-Demo"><span class="nav-number">2.</span> <span class="nav-text">看个 Demo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深入源码"><span class="nav-number">3.</span> <span class="nav-text">深入源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#看懂错误信息"><span class="nav-number">4.</span> <span class="nav-text">看懂错误信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DEBUG"><span class="nav-number">5.</span> <span class="nav-text">DEBUG</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pylon, Syncher</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+ Hosted by <a href="#" style="font-weight: bold">GitHub && Coding.net</a>
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+  <!-- 背景动画 -->
+  <script type="text/javascript" src="/js/src/particle.js"></script>
+</html>
