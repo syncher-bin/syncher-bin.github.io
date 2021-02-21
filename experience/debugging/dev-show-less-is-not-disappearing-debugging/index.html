@@ -123,15 +123,15 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="本文记录了一个前端按钮没有按照正常逻辑显示的 Debug 过程。有一个容器中有三个 Tile，如下定义容器的三种显示状态：三个 Tile 可以并列显示在一排时的状态为 Normal；当三个 Tile 无法一排显示在一排，其中有一个或者两个 Tile 处于 Overflow 的状态为 Collapsed；三个 Tile 显示在多排的状态为 Expanded。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/experience/debugging/dev-show-less-is-not-disappearing-debugging/images/2020-09/tile-group-three-layouts.png">
-<meta property="og:image" content="https://0x400.com/experience/debugging/dev-show-less-is-not-disappearing-debugging/images/2020-09/show-less-does-not-work.png">
-<meta property="og:image" content="https://0x400.com/experience/debugging/dev-show-less-is-not-disappearing-debugging/images/2020-09/tile-group-state-machine.png">
-<meta property="og:image" content="https://0x400.com/experience/debugging/dev-show-less-is-not-disappearing-debugging/images/2020-09/task-overview.png">
-<meta property="og:updated_time" content="2021-01-30T02:18:14.125Z">
+<meta property="og:image" content="https://0x400.com/images/2020-09/tile-group-three-layouts.png">
+<meta property="og:image" content="https://0x400.com/images/2020-09/show-less-does-not-work.png">
+<meta property="og:image" content="https://0x400.com/images/2020-09/tile-group-state-machine.png">
+<meta property="og:image" content="https://0x400.com/images/2020-09/task-overview.png">
+<meta property="og:updated_time" content="2021-02-21T14:28:44.482Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一按钮不正常显示的 Debug 记录">
 <meta name="twitter:description" content="本文记录了一个前端按钮没有按照正常逻辑显示的 Debug 过程。有一个容器中有三个 Tile，如下定义容器的三种显示状态：三个 Tile 可以并列显示在一排时的状态为 Normal；当三个 Tile 无法一排显示在一排，其中有一个或者两个 Tile 处于 Overflow 的状态为 Collapsed；三个 Tile 显示在多排的状态为 Expanded。">
-<meta name="twitter:image" content="https://0x400.com/experience/debugging/dev-show-less-is-not-disappearing-debugging/images/2020-09/tile-group-three-layouts.png">
+<meta name="twitter:image" content="https://0x400.com/images/2020-09/tile-group-three-layouts.png">
 
 
 
@@ -458,10 +458,10 @@
       
 
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>如图有一个容器中有三个 Tile，如下定义容器的三种显示状态：三个 Tile 可以并列显示在一排时的状态为 Normal；当三个 Tile 无法一排显示在一排，其中有一个或者两个 Tile 处于 Overflow 的状态为 Collapsed；三个 Tile 显示在多排的状态为 Expanded。<br><img src="images/2020-09/tile-group-three-layouts.png" alt><br>处于 Collapsed 状态时，可以点击 Show more 变到 Expanded 状态，同理处于 Expanded 状态时点击 Show less 可以变回 Collapsed 状态。拖动窗口大小时可以从 Expanded/Collapsed 到 Normal 状态下相互转化。<br><strong>Bug 是：从 Expanded 变至 Normal 时，Show less 不应该显示</strong>。</p>
-<p><img src="images/2020-09/show-less-does-not-work.png" alt></p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>通过上述的分析，显然这是一个<a href="https://zh.wikipedia.org/zh-hans/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA" target="_blank" rel="noopener">有限元状态机</a>问题，该问题总共有如下三种状态，Collapsed 和 Expanded 之间通过 Show more / Show less 相互转换，Collapsed/Expanded 和 Normal 之间通过 Resizing 相互转换。<br><img src="images/2020-09/tile-group-state-machine.png" alt></p>
-<p>分析代码逻辑发现，Show more / Show less 按钮是通过一个 <code>expandable</code> 状态控制的，但是代码的作者忽略了 Expanded 到 Normal 的状态转换，从而导致这种转换发生时 <code>expandable</code> 状态没有被更新。解决这个问题总共使用了不到两个小时，用了 4 个番茄时钟，其中两个 3 个时钟花在了梳理原来的逻辑上，逻辑梳理清楚后分析处这是一个状态机问题，后面修复就简单了。<br><img src="images/2020-09/task-overview.png" alt></p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>如图有一个容器中有三个 Tile，如下定义容器的三种显示状态：三个 Tile 可以并列显示在一排时的状态为 Normal；当三个 Tile 无法一排显示在一排，其中有一个或者两个 Tile 处于 Overflow 的状态为 Collapsed；三个 Tile 显示在多排的状态为 Expanded。<br><img src="/images/2020-09/tile-group-three-layouts.png" alt><br>处于 Collapsed 状态时，可以点击 Show more 变到 Expanded 状态，同理处于 Expanded 状态时点击 Show less 可以变回 Collapsed 状态。拖动窗口大小时可以从 Expanded/Collapsed 到 Normal 状态下相互转化。<br><strong>Bug 是：从 Expanded 变至 Normal 时，Show less 不应该显示</strong>。</p>
+<p><img src="/images/2020-09/show-less-does-not-work.png" alt></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>通过上述的分析，显然这是一个<a href="https://zh.wikipedia.org/zh-hans/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA" target="_blank" rel="noopener">有限元状态机</a>问题，该问题总共有如下三种状态，Collapsed 和 Expanded 之间通过 Show more / Show less 相互转换，Collapsed/Expanded 和 Normal 之间通过 Resizing 相互转换。<br><img src="/images/2020-09/tile-group-state-machine.png" alt></p>
+<p>分析代码逻辑发现，Show more / Show less 按钮是通过一个 <code>expandable</code> 状态控制的，但是代码的作者忽略了 Expanded 到 Normal 的状态转换，从而导致这种转换发生时 <code>expandable</code> 状态没有被更新。解决这个问题总共使用了不到两个小时，用了 4 个番茄时钟，其中两个 3 个时钟花在了梳理原来的逻辑上，逻辑梳理清楚后分析处这是一个状态机问题，后面修复就简单了。<br><img src="/images/2020-09/task-overview.png" alt></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本来这并不是一个特别头疼的 Bug，也不足以记录，但是经过分析之后其背后隐藏着一个状态机模型。这种发现是对重视理论基础，特别是重视算法的程序员的馈赠，至少我很享受这种发现所带来的乐趣。其实编程的本质还是抽象，抽象的基础是建模，建模的基础那就是数据结构和算法了。<br>综上述，我们应该坚持学习算法和数据结构。<br>其实就是找个继续刷算法的理由罢了，本文完(又水了一篇:狗头!</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>最后附上一些关于状态机的资料和几道 LeetCode 题目：</p>
 <ul>
@@ -488,7 +488,7 @@
 <p><span>本文标题:</span><a href="/experience/debugging/dev-show-less-is-not-disappearing-debugging/">一按钮不正常显示的 Debug 记录</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2020年09月16日 - 23:09</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/experience/debugging/dev-show-less-is-not-disappearing-debugging/" title="一按钮不正常显示的 Debug 记录">https://0x400.com/experience/debugging/dev-show-less-is-not-disappearing-debugging/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/experience/debugging/dev-show-less-is-not-disappearing-debugging/" aria-label="复制成功！"></i></span>
 </p>

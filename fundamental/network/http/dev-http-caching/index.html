@@ -123,17 +123,17 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="Cache is a hardware or software component that stores data so that future requests for that data can be served faster.  按照维基百科的定义，缓存是一种用来存储数据的硬件或者软件，它使得后续的信息传输更快。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/fundamental/network/http/dev-http-caching/images/2020-05/dog.jpg">
-<meta property="og:image" content="https://0x400.com/fundamental/network/http/dev-http-caching/images/2020-05/cache-steps.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/http/dev-http-caching/images/2020-05/cache-flow.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/http/dev-http-caching/images/2020-05/cache-mechanism.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/http/dev-http-caching/images/2020-05/reload-example.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/http/dev-http-caching/images/2020-05/cache-henuristic-expiration.png">
-<meta property="og:updated_time" content="2021-01-30T02:15:58.469Z">
+<meta property="og:image" content="https://0x400.com/images/2020-05/dog.jpg">
+<meta property="og:image" content="https://0x400.com/images/2020-05/cache-steps.png">
+<meta property="og:image" content="https://0x400.com/images/2020-05/cache-flow.png">
+<meta property="og:image" content="https://0x400.com/images/2020-05/cache-mechanism.png">
+<meta property="og:image" content="https://0x400.com/images/2020-05/reload-example.png">
+<meta property="og:image" content="https://0x400.com/images/2020-05/cache-henuristic-expiration.png">
+<meta property="og:updated_time" content="2021-02-21T14:30:26.795Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTTP 缓存不完全指南">
 <meta name="twitter:description" content="Cache is a hardware or software component that stores data so that future requests for that data can be served faster.  按照维基百科的定义，缓存是一种用来存储数据的硬件或者软件，它使得后续的信息传输更快。">
-<meta name="twitter:image" content="https://0x400.com/fundamental/network/http/dev-http-caching/images/2020-05/dog.jpg">
+<meta name="twitter:image" content="https://0x400.com/images/2020-05/dog.jpg">
 
 
 
@@ -472,7 +472,7 @@
 </blockquote>
 <p>按照维基百科的定义，缓存是一种用来存储数据的硬件或者软件，它使得后续的信息传输更快。</p>
 <a id="more"></a>
-<h2 id="从一张图片的加载说起"><a href="#从一张图片的加载说起" class="headerlink" title="从一张图片的加载说起"></a>从一张图片的加载说起</h2><p><img src="images/2020-05/dog.jpg" alt></p>
+<h2 id="从一张图片的加载说起"><a href="#从一张图片的加载说起" class="headerlink" title="从一张图片的加载说起"></a>从一张图片的加载说起</h2><p><img src="/images/2020-05/dog.jpg" alt></p>
 <p>这是这一张图片的响应头头部，其中包含 <code>last-modified</code> 字段。</p>
 <figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 <span class="number">200</span> OK</span><br><span class="line"><span class="attribute">content-length</span>: 39409</span><br><span class="line"><span class="attribute">last-modified</span>: Thu, 14 May 2020 14:29:20 GMT</span><br><span class="line"><span class="attribute">x-response-time</span>: 7ms</span><br></pre></td></tr></table></figure>
 <p>那么就让我们从这两个问题开始：</p>
@@ -486,7 +486,7 @@
 <li>避免瞬间拥塞<br>如明星出轨的新闻会使微博奔溃一样，其背后的原因就是瞬间有大量的用户共同访问同一个资源，这就使得网络瞬间拥塞（Flash Crowds）。使用缓存可以分散用户流量，避免瞬间拥塞。</li>
 <li>距离时延<br>信息以光速在互联网中传输，但是如果客户端访问的资源较远，客户端的请求仍然需要耗费几百毫秒甚至几秒的时间才能抵达服务器，服务器的响应也需要经过近似长的时间才能抵达客户端。如果能命中客户端的缓存或者离客户端较近的缓存，那么就可以缩短距离时延。</li>
 </ul>
-<h2 id="HTTP-缓存的三种状态"><a href="#HTTP-缓存的三种状态" class="headerlink" title="HTTP 缓存的三种状态"></a>HTTP 缓存的三种状态</h2><p>一般而言，缓存只有两种状态，即存活和过期，一旦缓存过期，会有定时器将其清除。和其他缓存软件不一样的是，HTTP 缓存中定义了三种缓存状态:<br><img src="images/2020-05/cache-steps.png" alt></p>
+<h2 id="HTTP-缓存的三种状态"><a href="#HTTP-缓存的三种状态" class="headerlink" title="HTTP 缓存的三种状态"></a>HTTP 缓存的三种状态</h2><p>一般而言，缓存只有两种状态，即存活和过期，一旦缓存过期，会有定时器将其清除。和其他缓存软件不一样的是，HTTP 缓存中定义了三种缓存状态:<br><img src="/images/2020-05/cache-steps.png" alt></p>
 <ol>
 <li>缓存命中</li>
 <li>缓存未命中</li>
@@ -495,8 +495,8 @@
 <p>缓存的第一二种状态和常规缓存软件一样，不同的是第三种状态 - 缓存再验证。<strong>和其他缓存软件不一样的是，HTTP 缓存过期后并不会立即被删除，所以当新的请求命中了过期后的缓存时，会携带 <code>if-none-match</code> 和 <code>last-modified</code> 头部请求服务器对资源做再验证。 </strong></p>
 <p>再验证的目的是判断过期后的缓存是否可用。如果在这段时间内资源并未发生变化，那么即使资源是过期的，但依然与最新的资源内容一致，<strong>然后服务端会使用 304 状态码告诉客户端可使用缓存，</strong>再验证通过。如果资源发生了改变，那么服务端会返回最新的资源，并覆盖掉缓存，再验证失败。</p>
 <h2 id="HTTP-缓存的处理流程"><a href="#HTTP-缓存的处理流程" class="headerlink" title="HTTP 缓存的处理流程"></a>HTTP 缓存的处理流程</h2><p>如之前所述，HTTP 缓存的处理流程如下：</p>
-<p><img src="images/2020-05/cache-flow.png" alt="cache flow"></p>
-<h2 id="HTTP-缓存机制"><a href="#HTTP-缓存机制" class="headerlink" title="HTTP 缓存机制"></a>HTTP 缓存机制</h2><p><img src="images/2020-05/cache-mechanism.png" alt="mechanism"></p>
+<p><img src="/images/2020-05/cache-flow.png" alt="cache flow"></p>
+<h2 id="HTTP-缓存机制"><a href="#HTTP-缓存机制" class="headerlink" title="HTTP 缓存机制"></a>HTTP 缓存机制</h2><p><img src="/images/2020-05/cache-mechanism.png" alt="mechanism"></p>
 <p>HTTP 缓存具有三个状态，与之对应也有三个策略，即<strong>存储策略、过期策略和再验证策略。</strong> 客户端和服务端使用响应的头部控制这些策略。</p>
 <h3 id="存储策略"><a href="#存储策略" class="headerlink" title="存储策略"></a>存储策略</h3><p>服务端下发的<strong>响应头部</strong>中包含了一个请求头 <code>Cache-Control</code>，其部分取值即用于控制客户端的缓存行为（并非客只有客户端实现了HTTP 缓存协议，如 CDN 一样的中间代理也会实现 HTTP 缓存）。<code>Cache-Control</code> 用于控制存储策略的部分取值如下：</p>
 <ul>
@@ -547,12 +547,12 @@
 </tr>
 </tbody>
 </table>
-<p>此前，我们所探讨的 <code>Cache-Control</code> 是作用在响应头部的，值得注意的是，该头部也可以作用在请求头部。<strong><code>Cache-Control</code> 作用在请求头部最常用的取值是 <code>no-cache</code> ，表示当前请求不能使用任何缓存，一般用于支持端到端的强制刷新。</strong> 当我们禁用缓存刷新页面时，浏览器就会携带该请求头。<br><img src="images/2020-05/reload-example.png" alt></p>
+<p>此前，我们所探讨的 <code>Cache-Control</code> 是作用在响应头部的，值得注意的是，该头部也可以作用在请求头部。<strong><code>Cache-Control</code> 作用在请求头部最常用的取值是 <code>no-cache</code> ，表示当前请求不能使用任何缓存，一般用于支持端到端的强制刷新。</strong> 当我们禁用缓存刷新页面时，浏览器就会携带该请求头。<br><img src="/images/2020-05/reload-example.png" alt></p>
 <h2 id="试探性过期策略"><a href="#试探性过期策略" class="headerlink" title="试探性过期策略"></a>试探性过期策略</h2><p>如果存储策略、过期策略和再验证策略都缺失，那么就无法使用任何 HTTP 缓存，也就是说系统没有实现 HTTP 缓存协议。</p>
 <p>一般而言，服务器都会为静态资源生成 <code>Last-Modified</code> 头部，即再验证策略可用。这种情况下<strong>如果服务端没有指定存储策略也没有指定过期策略，那么缓存客户端会使用试探性过期策略算法推算出资源过期时间</strong>。试探性过期策略算法如下：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> TimeSinceModify = max(<span class="number">0</span>, Current - LastModified);</span><br><span class="line"><span class="keyword">const</span> MaxAge = int(TimeSinceModify * LMFactor);</span><br></pre></td></tr></table></figure>
 <p>其中 LMFactor 取值如下：</p>
-<p><img src="images/2020-05/cache-henuristic-expiration.png" alt></p>
+<p><img src="/images/2020-05/cache-henuristic-expiration.png" alt></p>
 <p>现在， 让我们回顾文章开头的两个问题</p>
 <ul>
 <li>当我们刷新浏览器的时候，图片如何加载？是否会使用缓存？<br>我们知道，响应头中只包括再验证策略 - <code>Last-Modified</code> 头部，因此客户端会缓存图片并且使用试探性过期策略推导出缓存时间。因此，再次刷新图片时理论上会命中客户端缓存。</li>
@@ -584,7 +584,7 @@
 <p><span>本文标题:</span><a href="/fundamental/network/http/dev-http-caching/">HTTP 缓存不完全指南</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2020年05月18日 - 21:05</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/fundamental/network/http/dev-http-caching/" title="HTTP 缓存不完全指南">https://0x400.com/fundamental/network/http/dev-http-caching/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/fundamental/network/http/dev-http-caching/" aria-label="复制成功！"></i></span>
 </p>

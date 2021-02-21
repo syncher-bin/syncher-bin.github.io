@@ -123,13 +123,13 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="参考《大话数据结构》，如下定义树：  树（Tree）是n（n&amp;gt;=0）个结点的有限集。n=0时称为空树。在任意一颗非空树中：有且仅有一个特定的称为根（root）的结点；当n&amp;gt;1时，其余结点可分为m(m&amp;gt;0)个互补交互的有限集T1、T2…Tm，其中每一个集合本身又是一棵树，并称为根的子树（SubTree）。  在工作中，树被广泛使用，最常见的就是数据库中的 B+ 树，除此之外，网站中">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/fundamental/storage/mysql-store-tree-using-closure-table/images/2019-03/linkedList_menu_tree.png">
-<meta property="og:image" content="https://0x400.com/fundamental/storage/mysql-store-tree-using-closure-table/images/2019-03/closure_menu_table.png">
-<meta property="og:updated_time" content="2021-01-30T02:14:29.248Z">
+<meta property="og:image" content="https://0x400.com/images/2019-03/linkedList_menu_tree.png">
+<meta property="og:image" content="https://0x400.com/images/2019-03/closure_menu_table.png">
+<meta property="og:updated_time" content="2021-02-21T14:30:48.544Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树在 MySQL 中的存储方式">
 <meta name="twitter:description" content="参考《大话数据结构》，如下定义树：  树（Tree）是n（n&amp;gt;=0）个结点的有限集。n=0时称为空树。在任意一颗非空树中：有且仅有一个特定的称为根（root）的结点；当n&amp;gt;1时，其余结点可分为m(m&amp;gt;0)个互补交互的有限集T1、T2…Tm，其中每一个集合本身又是一棵树，并称为根的子树（SubTree）。  在工作中，树被广泛使用，最常见的就是数据库中的 B+ 树，除此之外，网站中">
-<meta name="twitter:image" content="https://0x400.com/fundamental/storage/mysql-store-tree-using-closure-table/images/2019-03/linkedList_menu_tree.png">
+<meta name="twitter:image" content="https://0x400.com/images/2019-03/linkedList_menu_tree.png">
 
 
 
@@ -466,9 +466,9 @@
 </ul>
 <p>最简单最常见的是领接表，最高效的是闭包表，所以本文将重点讨论领接表和闭包表。</p>
 <h2 id="领接表"><a href="#领接表" class="headerlink" title="领接表"></a>领接表</h2><p>这种存储方式很简单，就是给每一条记录添加一个指向父亲节点的指针，即 parent_id。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`menus`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">unsigned</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'自增id'</span>,</span><br><span class="line">  <span class="string">`menu_name`</span> <span class="built_in">varchar</span>(<span class="number">64</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">''</span> <span class="keyword">COMMENT</span> <span class="string">'语义化的菜单名称'</span>,</span><br><span class="line">  <span class="string">`parent_id`</span> <span class="built_in">int</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'1'</span> <span class="keyword">COMMENT</span> <span class="string">'菜单父节点id'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">7</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8 <span class="keyword">COMMENT</span>=<span class="string">'菜单表'</span></span><br></pre></td></tr></table></figure></p>
-<p><img src="images/2019-03/linkedList_menu_tree.png" alt></p>
+<p><img src="/images/2019-03/linkedList_menu_tree.png" alt></p>
 <h2 id="闭包表"><a href="#闭包表" class="headerlink" title="闭包表"></a>闭包表</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`menu_tree`</span> (</span><br><span class="line">  <span class="string">`ancestor`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">unsigned</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'祖先节点'</span>,</span><br><span class="line">  <span class="string">`descendant`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">unsigned</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'子代节点'</span>,</span><br><span class="line">  <span class="string">`distance`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">unsigned</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'子孙到祖先中间相差的层级数目'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> <span class="string">`uniq_ancestor_descendant`</span> (<span class="string">`ancestor`</span>,<span class="string">`descendant`</span>,<span class="string">`distance`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">10</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8 <span class="keyword">COMMENT</span>=<span class="string">'菜单闭包表'</span></span><br></pre></td></tr></table></figure>
-<p><img src="images/2019-03/closure_menu_table.png" alt></p>
+<p><img src="/images/2019-03/closure_menu_table.png" alt></p>
 <p>// 未完，待续……</p>
 
       
@@ -489,7 +489,7 @@
 <p><span>本文标题:</span><a href="/fundamental/storage/mysql-store-tree-using-closure-table/">树在 MySQL 中的存储方式</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2019年01月19日 - 16:01</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/fundamental/storage/mysql-store-tree-using-closure-table/" title="树在 MySQL 中的存储方式">https://0x400.com/fundamental/storage/mysql-store-tree-using-closure-table/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/fundamental/storage/mysql-store-tree-using-closure-table/" aria-label="复制成功！"></i></span>
 </p>

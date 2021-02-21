@@ -123,12 +123,12 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="描述https://leetcode.com/problems/word-ladder/ 给定两个单词 beginWord ，endWord 和一组单词列表，求从 beginWord 到 endWord 的最短转换序列的长度，其中转换规则如下：  每次只能转换一个字母 每次转换后的单词都必须在给定的单词列表中  分析如下案例, 123456789Input:beginWord = &amp;quot;hi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/fundamental/algorithm/lc-127-word-ladder/images/2019-08/lc-127-01.png">
-<meta property="og:updated_time" content="2021-01-30T02:09:57.208Z">
+<meta property="og:image" content="https://0x400.com/images/2019-08/lc-127-01.png">
+<meta property="og:updated_time" content="2021-02-21T14:30:04.031Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode-127 Word Ladder">
 <meta name="twitter:description" content="描述https://leetcode.com/problems/word-ladder/ 给定两个单词 beginWord ，endWord 和一组单词列表，求从 beginWord 到 endWord 的最短转换序列的长度，其中转换规则如下：  每次只能转换一个字母 每次转换后的单词都必须在给定的单词列表中  分析如下案例, 123456789Input:beginWord = &amp;quot;hi">
-<meta name="twitter:image" content="https://0x400.com/fundamental/algorithm/lc-127-word-ladder/images/2019-08/lc-127-01.png">
+<meta name="twitter:image" content="https://0x400.com/images/2019-08/lc-127-01.png">
 
 
 
@@ -460,7 +460,7 @@
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>如下案例,</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">beginWord = &quot;hit&quot;,</span><br><span class="line">endWord = &quot;cog&quot;,</span><br><span class="line">wordList = [&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]</span><br><span class="line"></span><br><span class="line">Output: 5</span><br><span class="line"></span><br><span class="line">Explanation: As one shortest transformation is &quot;hit&quot; -&gt; &quot;hot&quot; -&gt; &quot;dot&quot; -&gt; &quot;dog&quot; -&gt; &quot;cog&quot;,</span><br><span class="line">return its length 5.</span><br></pre></td></tr></table></figure>
 <p>首先使用（给定的单词和单词列表中的）每个单词作为一个顶点，构建连通图，如果两个顶点之间只相差一个字母，则两点之间可达。作图如下，</p>
-<p><img src="images/2019-08/lc-127-01.png" alt></p>
+<p><img src="/images/2019-08/lc-127-01.png" alt></p>
 <p>显然，问题的本质在于图的搜索，即从 <code>beginWord</code> 起始搜索 <code>endWord</code>，如果找到，返回最小路径，否则返回 0。那么问题分两部：</p>
 <ol>
 <li>构建无向图</li>
@@ -492,7 +492,7 @@
 <p><span>本文标题:</span><a href="/fundamental/algorithm/lc-127-word-ladder/">Leetcode-127 Word Ladder</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2019年08月13日 - 08:08</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/fundamental/algorithm/lc-127-word-ladder/" title="Leetcode-127 Word Ladder">https://0x400.com/fundamental/algorithm/lc-127-word-ladder/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/fundamental/algorithm/lc-127-word-ladder/" aria-label="复制成功！"></i></span>
 </p>

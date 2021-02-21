@@ -123,12 +123,12 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="DescriptionGiven two strings text1 and text2, return the length of their longest common subsequence. A subsequence of a string is a new string generated from the original string with some characters(c">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/fundamental/algorithm/lc-1143-longest-common-subsequence/images/2019-08/lc-1143-01.gif">
-<meta property="og:updated_time" content="2021-01-30T02:15:43.084Z">
+<meta property="og:image" content="https://0x400.com/images/2019-08/lc-1143-01.gif">
+<meta property="og:updated_time" content="2021-02-21T14:30:10.984Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode-1143 Longest Common Subsequence">
 <meta name="twitter:description" content="DescriptionGiven two strings text1 and text2, return the length of their longest common subsequence. A subsequence of a string is a new string generated from the original string with some characters(c">
-<meta name="twitter:image" content="https://0x400.com/fundamental/algorithm/lc-1143-longest-common-subsequence/images/2019-08/lc-1143-01.gif">
+<meta name="twitter:image" content="https://0x400.com/images/2019-08/lc-1143-01.gif">
 
 
 
@@ -488,7 +488,7 @@
 </ol>
 <h2 id="步骤2：递归定义最优解的值"><a href="#步骤2：递归定义最优解的值" class="headerlink" title="步骤2：递归定义最优解的值"></a>步骤2：递归定义最优解的值</h2><p>分治是将问题化为互不相交的子问题，然后递归的求解子问题，最后将子问题的解组合起来，求出原问题的解。而动态规划适用于子问题重叠的情况，原问题的最优解是由子问题最优解组合而成，求解原问题的解只需要求解部分子问题的解。</p>
 <p>按照动态规划的求解步骤，第二步是递归定义最优解的值，在本例中，最优解的值即为最长公共字串的长度。定义 $c[i, j] = lcslen(X_i, Y_j)$ 表示 X 的前 i 个元素和 Y 的前 j 个元素构成的最优解的值，则</p>
-<p><img src="images/2019-08/lc-1143-01.gif" alt></p>
+<p><img src="/images/2019-08/lc-1143-01.gif" alt></p>
 <h2 id="步骤3：计算最优解的值"><a href="#步骤3：计算最优解的值" class="headerlink" title="步骤3：计算最优解的值"></a>步骤3：计算最优解的值</h2><p>有了前两步的分析，计算最优解的值就已经看到曙光了，使用自底向上的方法，递推式的从问题最小规模开始计算，递推到原问题规模时结束。本例中，如果 i 或 j 等于0 (可理解为空字符串与任何字符串的最大公共字串长度为0)时，<code>c[i, 0] = 0, c[0, j] = 0</code>，所以可以如下初始化 c:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">m = len(x)</span><br><span class="line">n = len(y)</span><br><span class="line">// 问题从规模 <span class="number">0</span> 开始到规模 m 需要 m + <span class="number">1</span> 个存储空间</span><br><span class="line">c = [[<span class="number">0</span>] * (m + <span class="number">1</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(n + <span class="number">1</span>)]</span><br></pre></td></tr></table></figure>
 <p>然后如下递推计算各个状态下的最优解：</p>
@@ -516,7 +516,7 @@
 <p><span>本文标题:</span><a href="/fundamental/algorithm/lc-1143-longest-common-subsequence/">Leetcode-1143 Longest Common Subsequence</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2019年08月02日 - 16:08</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/fundamental/algorithm/lc-1143-longest-common-subsequence/" title="Leetcode-1143 Longest Common Subsequence">https://0x400.com/fundamental/algorithm/lc-1143-longest-common-subsequence/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/fundamental/algorithm/lc-1143-longest-common-subsequence/" aria-label="复制成功！"></i></span>
 </p>

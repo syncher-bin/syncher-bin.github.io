@@ -123,12 +123,12 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="题目描述Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example 1: 123Input: &amp;quot;babad&amp;quot;Output: &amp;quot;bab&amp;quot;Note: &amp;quot;aba&amp;quo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/fundamental/algorithm/lc-05-longest-palindromic-substring/images/2019-08/lc-05-01.png">
-<meta property="og:updated_time" content="2021-01-30T02:09:04.990Z">
+<meta property="og:image" content="https://0x400.com/images/2019-08/lc-05-01.png">
+<meta property="og:updated_time" content="2021-02-21T14:29:53.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode-5 Longest palindromic substring">
 <meta name="twitter:description" content="题目描述Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example 1: 123Input: &amp;quot;babad&amp;quot;Output: &amp;quot;bab&amp;quot;Note: &amp;quot;aba&amp;quo">
-<meta name="twitter:image" content="https://0x400.com/fundamental/algorithm/lc-05-longest-palindromic-substring/images/2019-08/lc-05-01.png">
+<meta name="twitter:image" content="https://0x400.com/images/2019-08/lc-05-01.png">
 
 
 
@@ -478,7 +478,7 @@
 <li>否则 $Z \in {P(X_{1,m-1}), P(X_{1, m-1}) }$</li>
 </ol>
 <h2 id="第二步：递归定义最优解的值"><a href="#第二步：递归定义最优解的值" class="headerlink" title="第二步：递归定义最优解的值"></a>第二步：递归定义最优解的值</h2><p>根据最优解的特征，最优解的值满足如下公式：</p>
-<p><img src="images/2019-08/lc-05-01.png" alt></p>
+<p><img src="/images/2019-08/lc-05-01.png" alt></p>
 <p>其中 $p(i, j)$ 表示$X_{i, j}$ 的最大回文串长度，即最优解的值。</p>
 <h2 id="第三步：-计算最优解"><a href="#第三步：-计算最优解" class="headerlink" title="第三步： 计算最优解"></a>第三步： 计算最优解</h2><p>根据前面分析，写出代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestPalindrome</span><span class="params">(self, s: str)</span> -&gt; str:</span></span><br><span class="line">        <span class="keyword">if</span> len(s) &lt;= <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> s</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">isPalindrome</span><span class="params">(i, j)</span>:</span></span><br><span class="line">            <span class="keyword">while</span> i &lt; j:</span><br><span class="line">                <span class="keyword">if</span> s[i] != s[j]:</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">                j -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">            </span><br><span class="line">        dp = [[<span class="string">""</span>] * len(s) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(s))]</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">helper</span><span class="params">(i, j)</span>:</span></span><br><span class="line">            <span class="keyword">if</span> dp[i][j] != <span class="string">""</span>:</span><br><span class="line">                <span class="keyword">return</span> dp[i][j]</span><br><span class="line">            <span class="keyword">if</span> isPalindrome(i, j):</span><br><span class="line">                dp[i][j] = s[i:j+<span class="number">1</span>]</span><br><span class="line">                <span class="keyword">return</span> dp[i][j]</span><br><span class="line">            r = helper(i+<span class="number">1</span>, j)</span><br><span class="line">            l = helper(i, j<span class="number">-1</span>)</span><br><span class="line">            dp[i][j] = r <span class="keyword">if</span> len(r) &gt; len(l) <span class="keyword">else</span> l</span><br><span class="line">            <span class="keyword">return</span> dp[i][j]</span><br><span class="line"></span><br><span class="line">        helper(<span class="number">0</span>, len(s)<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">0</span>][len(s)<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
@@ -507,7 +507,7 @@
 <p><span>本文标题:</span><a href="/fundamental/algorithm/lc-05-longest-palindromic-substring/">Leetcode-5 Longest palindromic substring</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2019年08月08日 - 11:08</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/fundamental/algorithm/lc-05-longest-palindromic-substring/" title="Leetcode-5 Longest palindromic substring">https://0x400.com/fundamental/algorithm/lc-05-longest-palindromic-substring/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/fundamental/algorithm/lc-05-longest-palindromic-substring/" aria-label="复制成功！"></i></span>
 </p>

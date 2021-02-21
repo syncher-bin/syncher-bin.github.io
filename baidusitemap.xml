@@ -4,6 +4,381 @@
 
     
   <url>
+    <loc>https://0x400.com/fundamental/storage/mysql-store-tree-using-closure-table/</loc>
+    <lastmod>2021-02-21T14:30:48.544Z</lastmod>
+    <data>
+        <display>
+        <title>树在 MySQL 中的存储方式</title>
+        <pubTime>2019-01-19T08:41:35.000Z</pubTime>
+        
+        <tag>Tree</tag>
+         
+        <tag>MySQL</tag>
+         
+         
+           
+             
+              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
+          
+             
+              <breadCrumb title="Storage" url="https://0x400.com/categories/fundamental/storage/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/fundamental/storage/mysql-sql-about-index/</loc>
+    <lastmod>2021-02-21T14:30:45.687Z</lastmod>
+    <data>
+        <display>
+        <title>MySQL 索引相关 SQL</title>
+        <pubTime>2018-01-19T08:41:35.000Z</pubTime>
+        
+        <tag>MySQL</tag>
+         
+         
+           
+             
+              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
+          
+             
+              <breadCrumb title="Storage" url="https://0x400.com/categories/fundamental/storage/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/fundamental/programming-language/php/php-codeigniter-load-database-analysis/</loc>
+    <lastmod>2021-02-21T14:30:38.556Z</lastmod>
+    <data>
+        <display>
+        <title>CodeIgniter load database 分析</title>
+        <pubTime>2018-03-30T21:47:30.000Z</pubTime>
+        
+        <tag>PHP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
+          
+             
+              <breadCrumb title="Programing-language" url="https://0x400.com/categories/fundamental/programing-language/"/>
+          
+             
+              <breadCrumb title="PHP" url="https://0x400.com/categories/fundamental/programing-language/php/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/fundamental/programming-language/javascript/frontend-javascript-execution-procession/</loc>
+    <lastmod>2021-02-21T14:30:36.490Z</lastmod>
+    <data>
+        <display>
+        <title>JavaScript 执行机制（不完全指北）</title>
+        <pubTime>2019-03-24T12:41:35.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+        <tag>Eventloop</tag>
+         
+         
+           
+             
+              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
+          
+             
+              <breadCrumb title="Programing-language" url="https://0x400.com/categories/fundamental/programing-language/"/>
+          
+             
+              <breadCrumb title="JavaScript" url="https://0x400.com/categories/fundamental/programing-language/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/fundamental/programming-language/javascript/dev-deno-intro/</loc>
+    <lastmod>2021-02-21T14:30:29.888Z</lastmod>
+    <data>
+        <display>
+        <title>新一代的 JavaScript/TypeScript 运行时 —— Deno</title>
+        <pubTime>2020-04-09T14:01:34.000Z</pubTime>
+        
+        <tag>Deno</tag>
+         
+        <tag>JavaScript</tag>
+         
+        <tag>TypeScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
+          
+             
+              <breadCrumb title="Programing-language" url="https://0x400.com/categories/fundamental/programing-language/"/>
+          
+             
+              <breadCrumb title="JavaScript" url="https://0x400.com/categories/fundamental/programing-language/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/fundamental/network/http/dev-http-caching/</loc>
+    <lastmod>2021-02-21T14:30:26.795Z</lastmod>
+    <data>
+        <display>
+        <title>HTTP 缓存不完全指南</title>
+        <pubTime>2020-05-18T13:08:34.000Z</pubTime>
+        
+        <tag>HTTP</tag>
+         
+        <tag>Caching</tag>
+         
+         
+           
+             
+              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
+          
+             
+              <breadCrumb title="Network" url="https://0x400.com/categories/fundamental/network/"/>
+          
+             
+              <breadCrumb title="HTTP" url="https://0x400.com/categories/fundamental/network/http/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/fundamental/network/dev-dive-into-tls/</loc>
+    <lastmod>2021-02-21T14:30:18.053Z</lastmod>
+    <data>
+        <display>
+        <title>HTTPS 原理不完全指北</title>
+        <pubTime>2020-04-12T11:30:34.000Z</pubTime>
+        
+        <tag>HTTPS</tag>
+         
+        <tag>TLS</tag>
+         
+         
+           
+             
+              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
+          
+             
+              <breadCrumb title="Network" url="https://0x400.com/categories/fundamental/network/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/fundamental/algorithm/lc-1143-longest-common-subsequence/</loc>
+    <lastmod>2021-02-21T14:30:10.984Z</lastmod>
+    <data>
+        <display>
+        <title>Leetcode-1143 Longest Common Subsequence</title>
+        <pubTime>2019-08-02T08:31:23.000Z</pubTime>
+        
+        <tag>DP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
+          
+             
+              <breadCrumb title="Algorithm" url="https://0x400.com/categories/fundamental/algorithm/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/fundamental/algorithm/lc-127-word-ladder/</loc>
+    <lastmod>2021-02-21T14:30:04.031Z</lastmod>
+    <data>
+        <display>
+        <title>Leetcode-127 Word Ladder</title>
+        <pubTime>2019-08-13T00:55:22.000Z</pubTime>
+        
+        <tag>Graph</tag>
+         
+        <tag>BFS</tag>
+         
+         
+           
+             
+              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
+          
+             
+              <breadCrumb title="Algorithm" url="https://0x400.com/categories/fundamental/algorithm/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/fundamental/algorithm/lc-35-search-insert-position/</loc>
+    <lastmod>2021-02-21T14:29:59.190Z</lastmod>
+    <data>
+        <display>
+        <title>Leetcode-35 —— Search Insert Position</title>
+        <pubTime>2019-07-09T12:44:49.000Z</pubTime>
+        
+        <tag>Search</tag>
+         
+         
+           
+             
+              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
+          
+             
+              <breadCrumb title="Algorithm" url="https://0x400.com/categories/fundamental/algorithm/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/fundamental/algorithm/lc-05-longest-palindromic-substring/</loc>
+    <lastmod>2021-02-21T14:29:53.540Z</lastmod>
+    <data>
+        <display>
+        <title>Leetcode-5 Longest palindromic substring</title>
+        <pubTime>2019-08-08T03:00:05.000Z</pubTime>
+        
+        <tag>DP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
+          
+             
+              <breadCrumb title="Algorithm" url="https://0x400.com/categories/fundamental/algorithm/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/experience/guide/dev-getting-started-with-sapui5/</loc>
+    <lastmod>2021-02-21T14:29:00.247Z</lastmod>
+    <data>
+        <display>
+        <title>搭建 SAPUI5 开发环境</title>
+        <pubTime>2020-08-29T07:39:21.000Z</pubTime>
+        
+        <tag>SAPUI5</tag>
+         
+        <tag>SAP</tag>
+         
+        <tag>OpenUI5</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="https://0x400.com/categories/experience/"/>
+          
+             
+              <breadCrumb title="Guide" url="https://0x400.com/categories/experience/guide/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/experience/guide/dev-environment-on-windows-and-linux/</loc>
+    <lastmod>2021-02-21T14:28:51.235Z</lastmod>
+    <data>
+        <display>
+        <title>Windows 10 配合 Ubuntu 搭建舒适开发环境不完全指北</title>
+        <pubTime>2019-07-02T09:52:34.000Z</pubTime>
+        
+        <tag>Dev</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="https://0x400.com/categories/experience/"/>
+          
+             
+              <breadCrumb title="Guide" url="https://0x400.com/categories/experience/guide/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/experience/debugging/dev-show-less-is-not-disappearing-debugging/</loc>
+    <lastmod>2021-02-21T14:28:44.482Z</lastmod>
+    <data>
+        <display>
+        <title>一按钮不正常显示的 Debug 记录</title>
+        <pubTime>2020-09-16T15:08:34.000Z</pubTime>
+        
+        <tag>XHR</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="https://0x400.com/categories/experience/"/>
+          
+             
+              <breadCrumb title="Debugging" url="https://0x400.com/categories/experience/debugging/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/</loc>
+    <lastmod>2021-02-21T14:28:39.484Z</lastmod>
+    <data>
+        <display>
+        <title>INVALID_STATE_ERR Debug 记录</title>
+        <pubTime>2020-05-28T13:08:34.000Z</pubTime>
+        
+        <tag>XHR</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="https://0x400.com/categories/experience/"/>
+          
+             
+              <breadCrumb title="Debugging" url="https://0x400.com/categories/experience/debugging/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://0x400.com/episode/jd-php-interview/</loc>
     <lastmod>2021-01-30T02:36:05.661Z</lastmod>
     <data>
@@ -567,33 +942,6 @@
 
     
   <url>
-    <loc>https://0x400.com/experience/guide/dev-getting-started-with-sapui5/</loc>
-    <lastmod>2021-01-30T02:18:39.519Z</lastmod>
-    <data>
-        <display>
-        <title>搭建 SAPUI5 开发环境</title>
-        <pubTime>2020-08-29T07:39:21.000Z</pubTime>
-        
-        <tag>SAPUI5</tag>
-         
-        <tag>SAP</tag>
-         
-        <tag>OpenUI5</tag>
-         
-         
-           
-             
-              <breadCrumb title="Experience" url="https://0x400.com/categories/experience/"/>
-          
-             
-              <breadCrumb title="Guide" url="https://0x400.com/categories/experience/guide/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://0x400.com/experience/guide/dev-environment-on-windows-with-wsl/</loc>
     <lastmod>2021-01-30T02:18:34.239Z</lastmod>
     <data>
@@ -619,29 +967,6 @@
 
     
   <url>
-    <loc>https://0x400.com/experience/guide/dev-environment-on-windows-and-linux/</loc>
-    <lastmod>2021-01-30T02:18:28.390Z</lastmod>
-    <data>
-        <display>
-        <title>Windows 10 配合 Ubuntu 搭建舒适开发环境不完全指北</title>
-        <pubTime>2019-07-02T09:52:34.000Z</pubTime>
-        
-        <tag>Dev</tag>
-         
-         
-           
-             
-              <breadCrumb title="Experience" url="https://0x400.com/categories/experience/"/>
-          
-             
-              <breadCrumb title="Guide" url="https://0x400.com/categories/experience/guide/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://0x400.com/experience/debugging/linux-debug/</loc>
     <lastmod>2021-01-30T02:18:20.689Z</lastmod>
     <data>
@@ -650,52 +975,6 @@
         <pubTime>2017-11-10T12:44:49.000Z</pubTime>
         
         <tag>BUG</tag>
-         
-         
-           
-             
-              <breadCrumb title="Experience" url="https://0x400.com/categories/experience/"/>
-          
-             
-              <breadCrumb title="Debugging" url="https://0x400.com/categories/experience/debugging/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://0x400.com/experience/debugging/dev-show-less-is-not-disappearing-debugging/</loc>
-    <lastmod>2021-01-30T02:18:14.125Z</lastmod>
-    <data>
-        <display>
-        <title>一按钮不正常显示的 Debug 记录</title>
-        <pubTime>2020-09-16T15:08:34.000Z</pubTime>
-        
-        <tag>XHR</tag>
-         
-         
-           
-             
-              <breadCrumb title="Experience" url="https://0x400.com/categories/experience/"/>
-          
-             
-              <breadCrumb title="Debugging" url="https://0x400.com/categories/experience/debugging/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/</loc>
-    <lastmod>2021-01-30T02:18:08.941Z</lastmod>
-    <data>
-        <display>
-        <title>INVALID_STATE_ERR Debug 记录</title>
-        <pubTime>2020-05-28T13:08:34.000Z</pubTime>
-        
-        <tag>XHR</tag>
          
          
            
@@ -736,34 +1015,6 @@
 
     
   <url>
-    <loc>https://0x400.com/fundamental/network/http/dev-http-caching/</loc>
-    <lastmod>2021-01-30T02:15:58.469Z</lastmod>
-    <data>
-        <display>
-        <title>HTTP 缓存不完全指南</title>
-        <pubTime>2020-05-18T13:08:34.000Z</pubTime>
-        
-        <tag>HTTP</tag>
-         
-        <tag>Caching</tag>
-         
-         
-           
-             
-              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
-          
-             
-              <breadCrumb title="Network" url="https://0x400.com/categories/fundamental/network/"/>
-          
-             
-              <breadCrumb title="HTTP" url="https://0x400.com/categories/fundamental/network/http/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://0x400.com/fundamental/algorithm/lc-21-merge-two-sorted-lists/</loc>
     <lastmod>2021-01-30T02:15:53.486Z</lastmod>
     <data>
@@ -772,29 +1023,6 @@
         <pubTime>2019-07-09T10:44:49.000Z</pubTime>
         
         <tag>LinkedList</tag>
-         
-         
-           
-             
-              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
-          
-             
-              <breadCrumb title="Algorithm" url="https://0x400.com/categories/fundamental/algorithm/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://0x400.com/fundamental/algorithm/lc-1143-longest-common-subsequence/</loc>
-    <lastmod>2021-01-30T02:15:43.084Z</lastmod>
-    <data>
-        <display>
-        <title>Leetcode-1143 Longest Common Subsequence</title>
-        <pubTime>2019-08-02T08:31:23.000Z</pubTime>
-        
-        <tag>DP</tag>
          
          
            
@@ -833,60 +1061,12 @@
 
     
   <url>
-    <loc>https://0x400.com/fundamental/storage/mysql-store-tree-using-closure-table/</loc>
-    <lastmod>2021-01-30T02:14:29.248Z</lastmod>
-    <data>
-        <display>
-        <title>树在 MySQL 中的存储方式</title>
-        <pubTime>2019-01-19T08:41:35.000Z</pubTime>
-        
-        <tag>Tree</tag>
-         
-        <tag>MySQL</tag>
-         
-         
-           
-             
-              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
-          
-             
-              <breadCrumb title="Storage" url="https://0x400.com/categories/fundamental/storage/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://0x400.com/fundamental/storage/mysql-sql-about-trigger/</loc>
     <lastmod>2021-01-30T02:14:23.832Z</lastmod>
     <data>
         <display>
         <title>MySQL 触发器相关的 SQL</title>
         <pubTime>2018-03-26T11:42:28.000Z</pubTime>
-        
-        <tag>MySQL</tag>
-         
-         
-           
-             
-              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
-          
-             
-              <breadCrumb title="Storage" url="https://0x400.com/categories/fundamental/storage/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://0x400.com/fundamental/storage/mysql-sql-about-index/</loc>
-    <lastmod>2021-01-30T02:14:19.432Z</lastmod>
-    <data>
-        <display>
-        <title>MySQL 索引相关 SQL</title>
-        <pubTime>2018-01-19T08:41:35.000Z</pubTime>
         
         <tag>MySQL</tag>
          
@@ -1030,32 +1210,6 @@
 
     
   <url>
-    <loc>https://0x400.com/fundamental/programming-language/php/php-codeigniter-load-database-analysis/</loc>
-    <lastmod>2021-01-30T02:13:45.682Z</lastmod>
-    <data>
-        <display>
-        <title>CodeIgniter load database 分析</title>
-        <pubTime>2018-03-30T21:47:30.000Z</pubTime>
-        
-        <tag>PHP</tag>
-         
-         
-           
-             
-              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
-          
-             
-              <breadCrumb title="Programing-language" url="https://0x400.com/categories/fundamental/programing-language/"/>
-          
-             
-              <breadCrumb title="PHP" url="https://0x400.com/categories/fundamental/programing-language/php/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://0x400.com/fundamental/programming-language/php/php-autoload-and-composer/</loc>
     <lastmod>2021-01-30T02:13:40.294Z</lastmod>
     <data>
@@ -1075,34 +1229,6 @@
           
              
               <breadCrumb title="PHP" url="https://0x400.com/categories/fundamental/programing-language/php/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://0x400.com/fundamental/programming-language/javascript/frontend-javascript-execution-procession/</loc>
-    <lastmod>2021-01-30T02:13:26.157Z</lastmod>
-    <data>
-        <display>
-        <title>JavaScript 执行机制（不完全指北）</title>
-        <pubTime>2019-03-24T12:41:35.000Z</pubTime>
-        
-        <tag>JavaScript</tag>
-         
-        <tag>Eventloop</tag>
-         
-         
-           
-             
-              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
-          
-             
-              <breadCrumb title="Programing-language" url="https://0x400.com/categories/fundamental/programing-language/"/>
-          
-             
-              <breadCrumb title="JavaScript" url="https://0x400.com/categories/fundamental/programing-language/javascript/"/>
           
         </display>
     </data>
@@ -1164,36 +1290,6 @@
 
     
   <url>
-    <loc>https://0x400.com/fundamental/programming-language/javascript/dev-deno-intro/</loc>
-    <lastmod>2021-01-30T02:13:00.402Z</lastmod>
-    <data>
-        <display>
-        <title>新一代的 JavaScript/TypeScript 运行时 —— Deno</title>
-        <pubTime>2020-04-09T14:01:34.000Z</pubTime>
-        
-        <tag>Deno</tag>
-         
-        <tag>JavaScript</tag>
-         
-        <tag>TypeScript</tag>
-         
-         
-           
-             
-              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
-          
-             
-              <breadCrumb title="Programing-language" url="https://0x400.com/categories/fundamental/programing-language/"/>
-          
-             
-              <breadCrumb title="JavaScript" url="https://0x400.com/categories/fundamental/programing-language/javascript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://0x400.com/fundamental/network/network-introduction-of-wireshark/</loc>
     <lastmod>2021-01-30T02:11:28.336Z</lastmod>
     <data>
@@ -1206,31 +1302,6 @@
         <tag>Network</tag>
          
         <tag>TCP</tag>
-         
-         
-           
-             
-              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
-          
-             
-              <breadCrumb title="Network" url="https://0x400.com/categories/fundamental/network/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://0x400.com/fundamental/network/dev-dive-into-tls/</loc>
-    <lastmod>2021-01-30T02:11:22.902Z</lastmod>
-    <data>
-        <display>
-        <title>HTTPS 原理不完全指北</title>
-        <pubTime>2020-04-12T11:30:34.000Z</pubTime>
-        
-        <tag>HTTPS</tag>
-         
-        <tag>TLS</tag>
          
          
            
@@ -1522,31 +1593,6 @@
 
     
   <url>
-    <loc>https://0x400.com/fundamental/algorithm/lc-127-word-ladder/</loc>
-    <lastmod>2021-01-30T02:09:57.208Z</lastmod>
-    <data>
-        <display>
-        <title>Leetcode-127 Word Ladder</title>
-        <pubTime>2019-08-13T00:55:22.000Z</pubTime>
-        
-        <tag>Graph</tag>
-         
-        <tag>BFS</tag>
-         
-         
-           
-             
-              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
-          
-             
-              <breadCrumb title="Algorithm" url="https://0x400.com/categories/fundamental/algorithm/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://0x400.com/fundamental/algorithm/lc-121-best-time-to-buy-and-sell-stock/</loc>
     <lastmod>2021-01-30T02:09:52.066Z</lastmod>
     <data>
@@ -1687,29 +1733,6 @@
 
     
   <url>
-    <loc>https://0x400.com/fundamental/algorithm/lc-35-search-insert-position/</loc>
-    <lastmod>2021-01-30T02:09:19.820Z</lastmod>
-    <data>
-        <display>
-        <title>Leetcode-35 —— Search Insert Position</title>
-        <pubTime>2019-07-09T12:44:49.000Z</pubTime>
-        
-        <tag>Search</tag>
-         
-         
-           
-             
-              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
-          
-             
-              <breadCrumb title="Algorithm" url="https://0x400.com/categories/fundamental/algorithm/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://0x400.com/fundamental/algorithm/lc-20-valid-parentheses/</loc>
     <lastmod>2021-01-30T02:09:09.091Z</lastmod>
     <data>
@@ -1718,29 +1741,6 @@
         <pubTime>2019-07-09T09:44:49.000Z</pubTime>
         
         <tag>Stack</tag>
-         
-         
-           
-             
-              <breadCrumb title="Fundamental" url="https://0x400.com/categories/fundamental/"/>
-          
-             
-              <breadCrumb title="Algorithm" url="https://0x400.com/categories/fundamental/algorithm/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://0x400.com/fundamental/algorithm/lc-05-longest-palindromic-substring/</loc>
-    <lastmod>2021-01-30T02:09:04.990Z</lastmod>
-    <data>
-        <display>
-        <title>Leetcode-5 Longest palindromic substring</title>
-        <pubTime>2019-08-08T03:00:05.000Z</pubTime>
-        
-        <tag>DP</tag>
          
          
            

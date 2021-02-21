@@ -462,7 +462,7 @@
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>如下案例,</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">beginWord = &quot;hit&quot;,</span><br><span class="line">endWord = &quot;cog&quot;,</span><br><span class="line">wordList = [&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]</span><br><span class="line"></span><br><span class="line">Output: 5</span><br><span class="line"></span><br><span class="line">Explanation: As one shortest transformation is &quot;hit&quot; -&gt; &quot;hot&quot; -&gt; &quot;dot&quot; -&gt; &quot;dog&quot; -&gt; &quot;cog&quot;,</span><br><span class="line">return its length 5.</span><br></pre></td></tr></table></figure>
 <p>首先使用（给定的单词和单词列表中的）每个单词作为一个顶点，构建连通图，如果两个顶点之间只相差一个字母，则两点之间可达。作图如下，</p>
-<p><img src="images/2019-08/lc-127-01.png" alt></p>
+<p><img src="/images/2019-08/lc-127-01.png" alt></p>
 <p>显然，问题的本质在于图的搜索，即从 <code>beginWord</code> 起始搜索 <code>endWord</code>，如果找到，返回最小路径，否则返回 0。那么问题分两部：</p>
 <ol>
 <li>构建无向图</li>

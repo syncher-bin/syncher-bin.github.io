@@ -123,22 +123,22 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="女朋友最近在学习 wireshark 时候问了我一个问题：为什么使用 http.host == baidu.com 过滤不到请求数据?  明明已经在 Chrome 上输入了 baidu.com，也看到返回结果了，为什么通过 http.host == baidu.com 过滤不到数据包呢？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/why-no-baidu.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/baidu-https.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/tls-01.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/tls-02.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/tls-03.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/tls-04.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/tls-cert.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/tls-cert-sign.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/tls-wireshark.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/hpbn_0402.png">
-<meta property="og:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/tls-proxy.png">
-<meta property="og:updated_time" content="2021-01-30T02:11:22.902Z">
+<meta property="og:image" content="https://0x400.com/images/2020-04/why-no-baidu.png">
+<meta property="og:image" content="https://0x400.com/images/2020-04/baidu-https.png">
+<meta property="og:image" content="https://0x400.com/images/2020-04/tls-01.png">
+<meta property="og:image" content="https://0x400.com/images/2020-04/tls-02.png">
+<meta property="og:image" content="https://0x400.com/images/2020-04/tls-03.png">
+<meta property="og:image" content="https://0x400.com/images/2020-04/tls-04.png">
+<meta property="og:image" content="https://0x400.com/images/2020-04/tls-cert.png">
+<meta property="og:image" content="https://0x400.com/images/2020-04/tls-cert-sign.png">
+<meta property="og:image" content="https://0x400.com/images/2020-04/tls-wireshark.png">
+<meta property="og:image" content="https://0x400.com/images/2020-04/hpbn_0402.png">
+<meta property="og:image" content="https://0x400.com/images/2020-04/tls-proxy.png">
+<meta property="og:updated_time" content="2021-02-21T14:30:18.053Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTTPS 原理不完全指北">
 <meta name="twitter:description" content="女朋友最近在学习 wireshark 时候问了我一个问题：为什么使用 http.host == baidu.com 过滤不到请求数据?  明明已经在 Chrome 上输入了 baidu.com，也看到返回结果了，为什么通过 http.host == baidu.com 过滤不到数据包呢？">
-<meta name="twitter:image" content="https://0x400.com/fundamental/network/dev-dive-into-tls/images/2020-04/why-no-baidu.png">
+<meta name="twitter:image" content="https://0x400.com/images/2020-04/why-no-baidu.png">
 
 
 
@@ -462,11 +462,11 @@
 
       
         <p>女朋友最近在学习 wireshark 时候问了我一个问题：<strong>为什么使用 <code>http.host == baidu.com</code> 过滤不到请求数据?</strong></p>
-<p><img src="images/2020-04/why-no-baidu.png" alt></p>
+<p><img src="/images/2020-04/why-no-baidu.png" alt></p>
 <p>明明已经在 Chrome 上输入了 <a href="baidu.com">baidu.com</a>，也看到返回结果了，为什么通过 <code>http.host == baidu.com</code> 过滤不到数据包呢？</p>
 <a id="more"></a>
 <p>答案也很明显，因为<strong>浏览器输入  <a href="baidu.com">baidu.com</a> 的时候使用了 HTTPS（加密的 HTTP），而 HTTP 是应用层协议，所以使用 <code>http</code> 过滤的前提是 wireshark 能看到应用层数据。</strong></p>
-<p><img src="images/2020-04/baidu-https.png" alt></p>
+<p><img src="/images/2020-04/baidu-https.png" alt></p>
 <h3 id="什么是-HTTP"><a href="#什么是-HTTP" class="headerlink" title="什么是 HTTP?"></a>什么是 HTTP?</h3><p>HTTP 是一种明文的超文本传输协议。</p>
 <h3 id="HTTP-为什么不安全？"><a href="#HTTP-为什么不安全？" class="headerlink" title="HTTP 为什么不安全？"></a>HTTP 为什么不安全？</h3><p>客户端的请求经过多次路由后才能到达服务器，中间会经过路由器，代理服务器等诸多第三方服务器，如果中间服务器出现叛变或者恶意劫持客户端传递的信息，那么客户端的信息谈何安全可言？</p>
 <p>我们来看一个案例：张三给罗翔发送一个 T 的小视频，张三够不够成传播淫秽物品罪？好吧，这不在我们本文讨论的范围，我们关心的是张三给罗翔发的小视频会不会被小朋友截取?</p>
@@ -474,7 +474,7 @@
 <p>罗翔：对是对，但是你得告诉我什么密码吧？要不然我收到了也看不了（？？？）。</p>
 <p>张三：我单独发给你行吗？</p>
 <p>罗翔：你傻呀，你发给我的请求被小朋友截取了，那一切努力不就白费了吗？</p>
-<p><img src="images/2020-04/tls-01.png" alt></p>
+<p><img src="/images/2020-04/tls-01.png" alt></p>
 <p>旁白君：以上张三和罗老师讨论的加密方式在计算机领域被称作为<strong>对称加密</strong>。</p>
 <h3 id="换个加密方式：-RSA-如何？"><a href="#换个加密方式：-RSA-如何？" class="headerlink" title="换个加密方式： RSA  如何？"></a>换个加密方式： RSA  如何？</h3><p>张三：有一种叫做 RSA 的加密算法很神奇的，你听过吗？</p>
 <p>旁白君：RSA 具有如下特点</p>
@@ -483,16 +483,16 @@
 <li>私钥解码由公钥解</li>
 <li><strong>公钥大家都可以知道，但是私钥只有自己知道</strong></li>
 </ul>
-<p><img src="images/2020-04/tls-02.png" alt></p>
+<p><img src="/images/2020-04/tls-02.png" alt></p>
 <p>罗翔：嗯，知道，你说说你的想法。</p>
 <p>张三：你把你的公钥给我，我用它来加密小视频，你收到后用你的私钥解密，你看行不行？</p>
-<p><img src="images/2020-04/tls-03.png" alt></p>
+<p><img src="/images/2020-04/tls-03.png" alt></p>
 <p>罗翔：行，那咱们试试看？</p>
 <p>（3 years later……）</p>
 <p>罗翔：太慢了吧，等我小视频全部收到老夫尚能饭否？</p>
 <h3 id="加密-解密太慢了"><a href="#加密-解密太慢了" class="headerlink" title="加密/解密太慢了?"></a>加密/解密太慢了?</h3><p>张三：咱们约定一下用 <code>XO</code> 作为<strong>对称加密</strong>的密钥，我用你的公钥把 <code>XO</code> 加密后给你，你收着，以后咱们就用它加密了，好不好？</p>
 <p>罗翔：同九年，汝甚秀。</p>
-<p><img src="images/2020-04/tls-04.png" alt></p>
+<p><img src="/images/2020-04/tls-04.png" alt></p>
 <p>旁白君：用非对称加密算法 RSA 交换对称加密用到的密钥，这就是 HTTPS 加密传输的核心原理。</p>
 <p>（3 minutes later ……）</p>
 <p>罗翔：一切就绪，小视频发过来吧……</p>
@@ -500,24 +500,24 @@
 <p>罗翔：what ???</p>
 <h3 id="证明你是你自己？"><a href="#证明你是你自己？" class="headerlink" title="证明你是你自己？"></a>证明你是你自己？</h3><p>罗翔：这样，咱们找个有公信力的公证机构，就比如<code>火星派进所</code>。我把经过它认证的<strong>证书</strong>给你，里面有我的公钥。</p>
 <p>张三：这确实是个好办法，但是你如何保证你把 <code>火星派进所</code> 认证后的证书在给我的时候没有被小朋友篡改呢？</p>
-<p><img src="images/2020-04/tls-cert.png" alt></p>
+<p><img src="/images/2020-04/tls-cert.png" alt></p>
 <h3 id="你确定公证处的证书没被修改？"><a href="#你确定公证处的证书没被修改？" class="headerlink" title="你确定公证处的证书没被修改？"></a>你确定公证处的证书没被修改？</h3><p>罗翔：让公证处给按个手印（<strong>数字签名</strong>），你知道手印造假成本很高嘛，你收到之后再辨识一下。</p>
 <p>张三：完美，成交。</p>
-<p><img src="images/2020-04/tls-cert-sign.png" alt></p>
+<p><img src="/images/2020-04/tls-cert-sign.png" alt></p>
 <p>旁白君：证书 + 数字签名 ==&gt; <strong>数字证书</strong>，简单解释数字签名是把<strong>包含公钥的消息</strong>经过不可逆 Hash 后得到的，把这个签名和公钥等信息放入证书中，收到证书后将消息使用同样的 Hash 算法得到一个新签名，如果和证书中的签名一致，说明消息没有被篡改。</p>
 <p>以上就是 HTTPS 的加密算法原理，具体实现的时候会在传输层应用层之间专门有一层来实现以上加密算法，称作 TLS (Transport Layer Security)。顺便科普一下，早期的实现协议是 SSL，后来演变变成了 TLS，目前 TLS 版本有 v1.1, v1.2, v1.3，其中 v1.1 就是早期的 SSLv1.3。</p>
-<h3 id="Wireshark-抓包看一下"><a href="#Wireshark-抓包看一下" class="headerlink" title="Wireshark 抓包看一下"></a>Wireshark 抓包看一下</h3><p><img src="images/2020-04/tls-wireshark.png" alt></p>
+<h3 id="Wireshark-抓包看一下"><a href="#Wireshark-抓包看一下" class="headerlink" title="Wireshark 抓包看一下"></a>Wireshark 抓包看一下</h3><p><img src="/images/2020-04/tls-wireshark.png" alt></p>
 <p>建立 TLS 连接之前，客户端和服务端要进行握手（这里指的不是 TCP 三次握手），握手阶段要完成如下三件事情：</p>
 <ol>
 <li>Client Hello: 发起 TLS 请求，告知服务端支持的加密算法</li>
 <li>Server Hello: 下发数字证书，协商加密算法</li>
 <li>客户端和服务端交换接下来对称加密用到的 4 个密钥（客户端和服务端加密的密钥不同，各自分别由两个密钥，其中一个叫 MAC 密钥，用于验证数据完整性）</li>
 </ol>
-<p><img src="images/2020-04/hpbn_0402.png" alt></p>
+<p><img src="/images/2020-04/hpbn_0402.png" alt></p>
 <p>(图片来自：<a href="https://hpbn.co/transport-layer-security-tls/" target="_blank" rel="noopener">https://hpbn.co/transport-layer-security-tls/</a>)</p>
 <h3 id="解密-TLS"><a href="#解密-TLS" class="headerlink" title="解密 TLS"></a>解密 TLS</h3><p><strong>Fiddler 解密</strong></p>
 <p>了解 HTTPS(TLS) 加密原理后，我们知道要解密 TLS 根本方法是获取到私钥，当然如果我们无法获取到私钥的情况下还有一种常用的方式是使用本地代理，如下如：</p>
-<p><img src="images/2020-04/tls-proxy.png" alt></p>
+<p><img src="/images/2020-04/tls-proxy.png" alt></p>
 <p>Fiddler 解密 TLS 原理就是如上，所以启用 Fiddler 解密我们需要：</p>
 <ul>
 <li>信任 Fiddler 的跟证书（没有认证过的证书）</li>
@@ -554,7 +554,7 @@
 <p><span>本文标题:</span><a href="/fundamental/network/dev-dive-into-tls/">HTTPS 原理不完全指北</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2020年04月12日 - 19:04</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/fundamental/network/dev-dive-into-tls/" title="HTTPS 原理不完全指北">https://0x400.com/fundamental/network/dev-dive-into-tls/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/fundamental/network/dev-dive-into-tls/" aria-label="复制成功！"></i></span>
 </p>

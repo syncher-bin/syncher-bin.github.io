@@ -123,14 +123,14 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="零、背景Mac Book Pro （MBP）一直是极客开发者首选的操作系统，然而在工作中，并不是每个公司都会为开发者配备 MBP 的，然而，相信有强迫症的程序员都无法忍受 Windows 的命令行工具，我也不例外。好再微软在 2019 年 5 月推出了一款 Windows Terminal（截至作者撰稿时，仅 Preview 版可用），可以说给基于 Window 开发的程序员带来了福音。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/experience/guide/dev-environment-on-windows-and-linux/images/2019-07/map-drive.png">
-<meta property="og:image" content="https://0x400.com/experience/guide/dev-environment-on-windows-and-linux/images/2019-07/can-not-access-shared-folder.png">
-<meta property="og:image" content="https://0x400.com/experience/guide/dev-environment-on-windows-and-linux/images/2019-07/share-folder.png">
-<meta property="og:updated_time" content="2021-01-30T02:18:28.390Z">
+<meta property="og:image" content="https://0x400.com/images/2019-07/map-drive.png">
+<meta property="og:image" content="https://0x400.com/images/2019-07/can-not-access-shared-folder.png">
+<meta property="og:image" content="https://0x400.com/images/2019-07/share-folder.png">
+<meta property="og:updated_time" content="2021-02-21T14:28:51.235Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows 10 配合 Ubuntu 搭建舒适开发环境不完全指北">
 <meta name="twitter:description" content="零、背景Mac Book Pro （MBP）一直是极客开发者首选的操作系统，然而在工作中，并不是每个公司都会为开发者配备 MBP 的，然而，相信有强迫症的程序员都无法忍受 Windows 的命令行工具，我也不例外。好再微软在 2019 年 5 月推出了一款 Windows Terminal（截至作者撰稿时，仅 Preview 版可用），可以说给基于 Window 开发的程序员带来了福音。">
-<meta name="twitter:image" content="https://0x400.com/experience/guide/dev-environment-on-windows-and-linux/images/2019-07/map-drive.png">
+<meta name="twitter:image" content="https://0x400.com/images/2019-07/map-drive.png">
 
 
 
@@ -513,9 +513,9 @@
 <p><strong>重启 smbd 服务</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> sudo service smbd restart</span><br></pre></td></tr></table></figure>
 <h3 id="1-2-Windows-接入共享文件夹"><a href="#1-2-Windows-接入共享文件夹" class="headerlink" title="1.2 Windows 接入共享文件夹"></a>1.2 Windows 接入共享文件夹</h3><p>打开资源管理器，输入 <a href>\your-ip\your-shared-folder</a>，在弹出的对话框中输入账号密码。输入完成后，即可在 Windows 上开发项目，对项目的更改会实时同步到 Linux 中，修改完成后可直接在 Linux 中编译运行，Web 等项目则可以直接在 Window 中通过浏览器远程访问项目。</p>
-<p><strong>[Optional]</strong>: 将共享目录映射成一个 Drive<br>打开资源管理器 -&gt; Network -&gt; Map Network Drive:<br><img src="images/2019-07/map-drive.png" alt></p>
+<p><strong>[Optional]</strong>: 将共享目录映射成一个 Drive<br>打开资源管理器 -&gt; Network -&gt; Map Network Drive:<br><img src="/images/2019-07/map-drive.png" alt></p>
 <h3 id="1-3-Optional-troubleshooting"><a href="#1-3-Optional-troubleshooting" class="headerlink" title="1.3 [Optional] troubleshooting"></a>1.3 [Optional] troubleshooting</h3><p><strong>Window 无法连接共享文件夹</strong><br>Window 尝试连接共享文件夹时，报如下错误：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You Can’t  Access This Share Folder Because Your Organisation’s Security Policies Block Unauthenticated Guest Access.</span><br></pre></td></tr></table></figure></p>
-<p><img src="images/2019-07/can-not-access-shared-folder.png" alt="can not access shared folder"></p>
+<p><img src="/images/2019-07/can-not-access-shared-folder.png" alt="can not access shared folder"></p>
 <ul>
 <li><p>ssh 登录 ubuntu，使用 smbclient 检查 samba 服务的可用性</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> sudo apt-get install -y smbclient</span><br><span class="line"><span class="meta">&gt;</span> smbclient -L \\localhost -U username%your-password</span><br></pre></td></tr></table></figure>
@@ -534,7 +534,7 @@
 <p>虚拟机提供多种网络环境，如果要接入外网的话一般会选 <code>Bridge</code> 和 <code>NAT</code> 这两种方案之一。但是，一般来讲公司的内网 IP 会受限制，无法使用 <code>Bridge</code>，而使用 <code>NAT</code> 网络时，VM Player 对端口转发支持并不是很好(Pro 版要收费)。总的来讲，一是折腾起来很麻烦， 二十使用虚拟机本身就很耗费资源，显得臃肿，与极客开发者的性格不相符合。</p>
 </li>
 <li><p>文件夹共享问题</p>
-<p>使用虚拟机管理软件提供的文件夹共享可以把 Windows 宿主机下的文件夹挂在到 Linux 中，但是这种方式在共享文件夹中使用 <code>npm</code> 会有一些坑，与 <code>symlink</code> 相关，详情可以参考<a href="https://blog.csdn.net/joshua2011/article/details/88580489" target="_blank" rel="noopener">这里</a><br><img src="images/2019-07/share-folder.png" alt></p>
+<p>使用虚拟机管理软件提供的文件夹共享可以把 Windows 宿主机下的文件夹挂在到 Linux 中，但是这种方式在共享文件夹中使用 <code>npm</code> 会有一些坑，与 <code>symlink</code> 相关，详情可以参考<a href="https://blog.csdn.net/joshua2011/article/details/88580489" target="_blank" rel="noopener">这里</a><br><img src="/images/2019-07/share-folder.png" alt></p>
 <p>除了使用虚拟机管理软件提供的文件夹共享方式以外，还可以用 samba 服务把虚拟机里的目录共享到宿主机上，这样可以很方便的在 Windows 上开发，在 Linux 中完成编译运行。</p>
 </li>
 </ul>
@@ -557,7 +557,7 @@
 <p><span>本文标题:</span><a href="/experience/guide/dev-environment-on-windows-and-linux/">Windows 10 配合 Ubuntu 搭建舒适开发环境不完全指北</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2019年07月02日 - 17:07</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/experience/guide/dev-environment-on-windows-and-linux/" title="Windows 10 配合 Ubuntu 搭建舒适开发环境不完全指北">https://0x400.com/experience/guide/dev-environment-on-windows-and-linux/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/experience/guide/dev-environment-on-windows-and-linux/" aria-label="复制成功！"></i></span>
 </p>

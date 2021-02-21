@@ -123,12 +123,12 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="前言本文试图讲解 JavaScript 的执行机制，理解事件循环，读完这篇文章，本文围绕以下两个问题讲解：  为什么 JavaScript 是单线程和异步？ JavaScript 如何实现异步？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/fundamental/programming-language/javascript/frontend-javascript-execution-procession/images/2019-03/async-io-muti-thread.png">
-<meta property="og:updated_time" content="2021-01-30T02:13:26.157Z">
+<meta property="og:image" content="https://0x400.com/images/2019-03/async-io-muti-thread.png">
+<meta property="og:updated_time" content="2021-02-21T14:30:36.490Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript 执行机制（不完全指北）">
 <meta name="twitter:description" content="前言本文试图讲解 JavaScript 的执行机制，理解事件循环，读完这篇文章，本文围绕以下两个问题讲解：  为什么 JavaScript 是单线程和异步？ JavaScript 如何实现异步？">
-<meta name="twitter:image" content="https://0x400.com/fundamental/programming-language/javascript/frontend-javascript-execution-procession/images/2019-03/async-io-muti-thread.png">
+<meta name="twitter:image" content="https://0x400.com/images/2019-03/async-io-muti-thread.png">
 
 
 
@@ -491,7 +491,7 @@
 <li>macro-task(宏任务)：包括整体代码（script 标签），定时器（setTimeout、setInterval）</li>
 <li>micro-task(微任务)：Promise，process.nextTick</li>
 </ul>
-<h3 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h3><p>主线程执行，遇到异步任务时，有工作线程执行异步任务，并在主线程中注册回调函数<br><img src="images/2019-03/async-io-muti-thread.png" alt="异步IO"></p>
+<h3 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h3><p>主线程执行，遇到异步任务时，有工作线程执行异步任务，并在主线程中注册回调函数<br><img src="/images/2019-03/async-io-muti-thread.png" alt="异步IO"></p>
 <center>(图片来自《深入浅出Node.js》)</center>
 
 <p>在 JavaScript 执行之前，会先将任务放入<strong>宏任务队列</strong>和<strong>微任务队列</strong>中。一次 JavaScript 执行按照如下流程进行，宏任务作为 JavaScript 的执行单位开始执行，宏任务执行结束检查是否有可执行的微任务，如果有则执行所有的微任务，如果没有则结束本次执行。</p>
@@ -548,7 +548,7 @@ cond(no)->macro</textarea><textarea id="flowchart-1-options" style="display: non
 <p><span>本文标题:</span><a href="/fundamental/programming-language/javascript/frontend-javascript-execution-procession/">JavaScript 执行机制（不完全指北）</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2019年03月24日 - 20:03</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/fundamental/programming-language/javascript/frontend-javascript-execution-procession/" title="JavaScript 执行机制（不完全指北）">https://0x400.com/fundamental/programming-language/javascript/frontend-javascript-execution-procession/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/fundamental/programming-language/javascript/frontend-javascript-execution-procession/" aria-label="复制成功！"></i></span>
 </p>

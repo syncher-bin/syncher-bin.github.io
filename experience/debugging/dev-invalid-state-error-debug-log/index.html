@@ -123,16 +123,16 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="本文记录了 INVALID_STATE_ERR 排查过程。项目前端使用 SAPUI5 开发，运行集成测试时，所有的 AJAX 请求都会被 Mock。今天遇到一个问题，一些 URL 改动后集成测试运行失败， 报了个 INVALID_STATE_ERR 的错误。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/mockserver-start-up.png">
-<meta property="og:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/mockserver-start.png">
-<meta property="og:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/mockserver-start-1.png">
-<meta property="og:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/error-info.png">
-<meta property="og:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/set-response-headers.png">
-<meta property="og:updated_time" content="2021-01-30T02:18:08.941Z">
+<meta property="og:image" content="https://0x400.com/images/2020-05/mockserver-start-up.png">
+<meta property="og:image" content="https://0x400.com/images/2020-05/mockserver-start.png">
+<meta property="og:image" content="https://0x400.com/images/2020-05/mockserver-start-1.png">
+<meta property="og:image" content="https://0x400.com/images/2020-05/error-info.png">
+<meta property="og:image" content="https://0x400.com/images/2020-05/set-response-headers.png">
+<meta property="og:updated_time" content="2021-02-21T14:28:39.484Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="INVALID_STATE_ERR Debug 记录">
 <meta name="twitter:description" content="本文记录了 INVALID_STATE_ERR 排查过程。项目前端使用 SAPUI5 开发，运行集成测试时，所有的 AJAX 请求都会被 Mock。今天遇到一个问题，一些 URL 改动后集成测试运行失败， 报了个 INVALID_STATE_ERR 的错误。">
-<meta name="twitter:image" content="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/images/2020-05/mockserver-start-up.png">
+<meta name="twitter:image" content="https://0x400.com/images/2020-05/mockserver-start-up.png">
 
 
 
@@ -490,13 +490,13 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> oUriParameters = <span class="keyword">new</span> UriParameters(<span class="built_in">window</span>.location.href);</span><br></pre></td></tr></table></figure>
 <h3 id="看个-Demo"><a href="#看个-Demo" class="headerlink" title="看个 Demo"></a>看个 Demo</h3><p>看完文档，还是比较模糊，下一步我需要看个 Demo，本来我可以直接看项目中的 MockServer，只不过项目中的 MockServer 是比较复杂的，不利于理解。</p>
 <p>根据<a href="https://sapui5.hana.ondemand.com/#/topic/bae9d90d2e9c4206889368f04edab508" target="_blank" rel="noopener">官方 Demo</a> 画了个流程图，</p>
-<p><img src="images/2020-05/mockserver-start-up.png" alt></p>
+<p><img src="/images/2020-05/mockserver-start-up.png" alt></p>
 <p>其中用到了 simulate 的方法。</p>
 <h3 id="深入源码"><a href="#深入源码" class="headerlink" title="深入源码"></a>深入源码</h3><p>至此，我对 MockServer 有了一知半解，但是我还不知道 <code>rootUri</code>, <code>requests</code> 和 <code>autoRespond</code> 的具体逻辑，所以我决定去看看 MockServer 的源码。克隆 openui5</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> git clone https://github.com/SAP/openui5.git</span><br></pre></td></tr></table></figure>
 <p>找到 <code>src/sap.ui.core/src/sap/ui/core/util/MockServer.js</code> </p>
 <p>从 start 方法开始分析， 我们可以发现 start 方法会调 <code>sinon.fakeServer.create</code> 创建一个 FakeServer，然后再注册 mocked requests. 所以接下来我需要了解一下 sinon.fakeServer.</p>
-<p><img src="images/2020-05/mockserver-start.png" alt></p>
+<p><img src="/images/2020-05/mockserver-start.png" alt></p>
 <p>打开 sinon API 文档，找到<a href="https://sinonjs.org/releases/latest/fake-xhr-and-server/" target="_blank" rel="noopener">FakeServer</a>，使用很简单，直接看如下 demo，</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    setUp: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.server = sinon.createFakeServer();</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    tearDown: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.server.restore();</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="string">"test should fetch comments from server"</span> : <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.server.respondWith(<span class="string">"GET"</span>, <span class="string">"/some/article/comments.json"</span>,</span><br><span class="line">            [<span class="number">200</span>, &#123; <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span> &#125;,</span><br><span class="line">             <span class="string">'[&#123; "id": 12, "comment": "Hey there" &#125;]'</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> callback = sinon.spy();</span><br><span class="line">        myLib.getCommentsFor(<span class="string">"/some/article"</span>, callback);</span><br><span class="line">        <span class="keyword">this</span>.server.respond();</span><br><span class="line"></span><br><span class="line">        sinon.assert.calledWith(callback, [&#123; <span class="attr">id</span>: <span class="number">12</span>, <span class="attr">comment</span>: <span class="string">"Hey there"</span> &#125;]);</span><br><span class="line"></span><br><span class="line">        assert(server.requests.length &gt; <span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其中两个 <code>respondWith</code> 和 <code>respond</code> 这两个方法需要我重点关注。回到 <code>MockServer.js</code> 的源码发现，<code>_addRequestHanlder</code> 方法最终调用 <code>respondWith</code> (3446 行附近)，</p>
@@ -514,17 +514,17 @@
 <p>再看 <code>createRequest(data)</code> 方法，该方法返回一个对象</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createRequest</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> oRequest = &#123;</span><br><span class="line">        <span class="comment">// ... some code here</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> oRequest;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这个对象被 <code>MockerServer.js</code> 的 start 方法消费，看源码</p>
-<p><img src="images/2020-05/mockserver-start-1.png" alt></p>
+<p><img src="/images/2020-05/mockserver-start-1.png" alt></p>
 <p>该对象提供了 <code>respondWith</code> 中需要的三个参数，即 method, path 和 response。</p>
 <p>至此， 我已经看懂了整个 MockServer 的过程了，再回头看错误信息，</p>
-<p><img src="images/2020-05/error-info.png" alt></p>
+<p><img src="/images/2020-05/error-info.png" alt></p>
 <h3 id="看懂错误信息"><a href="#看懂错误信息" class="headerlink" title="看懂错误信息"></a>看懂错误信息</h3><p>错误由 XMLHttpRequest 对象引起，因此需要查阅 XHR 的 <a href="https://www.w3.org/TR/XMLHttpRequest1/" target="_blank" rel="noopener">API 文档</a>，搜索关键词 <code>INVALID_STATE_ERR</code> 共发现 8 处，</p>
 <blockquote>
 <p>Throws an <code>INVALID_STATE_ERR</code> exception if the state is not <a href="https://www.w3.org/TR/XMLHttpRequest1/#dom-xmlhttprequest-opened" target="_blank" rel="noopener">OPENED</a> or if the <a href="https://www.w3.org/TR/XMLHttpRequest1/#send-flag" target="_blank" rel="noopener"><code>send()</code> flag</a> is true.</p>
 </blockquote>
 <p>也就是说如果 XHR 的状态如果是 not opend 或者是已经 send 后的状态，那么就会抛出该异常。</p>
 <p>结合错误信息给出的函数调用栈很容易定位出该错误发生在 <code>setRespinseHeaders</code> 之后，打开 sinon 源码去看 setResponseHeader 的实现，发现有个 verifyRequestOpend 方法。</p>
-<p><img src="images/2020-05/set-response-headers.png" alt></p>
+<p><img src="/images/2020-05/set-response-headers.png" alt></p>
 <p>再进入 verifyRequestOpend 方法一看，果然是从这里抛出的异常，异常原因就是 xhr 的状态已经变成 4 了，4 代表 DONE，详细状态参考<a href="https://www.w3.org/TR/XMLHttpRequest1/#dom-xmlhttprequest-done" target="_blank" rel="noopener">这里</a>。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">verifyRequestOpened</span>(<span class="params">xhr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (xhr.readyState != FakeXMLHttpRequest.OPENED) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"INVALID_STATE_ERR - "</span> + xhr.readyState);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>说明 298 行执行 <code>xhr.resondJSON</code> 之前已经执行过 <code>xhr.send</code> 方法了。</p>
@@ -549,7 +549,7 @@
 <p><span>本文标题:</span><a href="/experience/debugging/dev-invalid-state-error-debug-log/">INVALID_STATE_ERR Debug 记录</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2020年05月28日 - 21:05</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/experience/debugging/dev-invalid-state-error-debug-log/" title="INVALID_STATE_ERR Debug 记录">https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/experience/debugging/dev-invalid-state-error-debug-log/" aria-label="复制成功！"></i></span>
 </p>

@@ -123,15 +123,15 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="使用 CodeIgniter 2.x 可以配置 autoload 自动加载数据库，也可以在 Model 的构造函数中使用$this-&amp;gt;load-&amp;gt;database()方法加载数据库：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/fundamental/programming-language/php/php-codeigniter-load-database-analysis/images/20180331/fpm-pconnect.png">
-<meta property="og:image" content="https://0x400.com/fundamental/programming-language/php/php-codeigniter-load-database-analysis/images/20180331/count-read-db.png">
-<meta property="og:image" content="https://0x400.com/fundamental/programming-language/php/php-codeigniter-load-database-analysis/images/20180331/read-db.png">
-<meta property="og:image" content="https://0x400.com/fundamental/programming-language/php/php-codeigniter-load-database-analysis/images/20180331/no-read.png">
-<meta property="og:updated_time" content="2021-01-30T02:13:45.682Z">
+<meta property="og:image" content="https://0x400.com/images/20180331/fpm-pconnect.png">
+<meta property="og:image" content="https://0x400.com/images/20180331/count-read-db.png">
+<meta property="og:image" content="https://0x400.com/images/20180331/read-db.png">
+<meta property="og:image" content="https://0x400.com/images/20180331/no-read.png">
+<meta property="og:updated_time" content="2021-02-21T14:30:38.556Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CodeIgniter load database 分析">
 <meta name="twitter:description" content="使用 CodeIgniter 2.x 可以配置 autoload 自动加载数据库，也可以在 Model 的构造函数中使用$this-&amp;gt;load-&amp;gt;database()方法加载数据库：">
-<meta name="twitter:image" content="https://0x400.com/fundamental/programming-language/php/php-codeigniter-load-database-analysis/images/20180331/fpm-pconnect.png">
+<meta name="twitter:image" content="https://0x400.com/images/20180331/fpm-pconnect.png">
 
 
 
@@ -480,15 +480,15 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Initialize Database Settings</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@access</span>	private Called by the constructor</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>	mixed</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span>	void</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initialize</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// If an existing connection resource is available</span></span><br><span class="line">	<span class="comment">// there is no need to connect and select the database</span></span><br><span class="line">	<span class="keyword">if</span> (is_resource(<span class="keyword">$this</span>-&gt;conn_id) <span class="keyword">OR</span> is_object(<span class="keyword">$this</span>-&gt;conn_id))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">TRUE</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// ----------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Connect to the database and set the connection ID</span></span><br><span class="line">	<span class="keyword">$this</span>-&gt;conn_id = (<span class="keyword">$this</span>-&gt;pconnect == <span class="keyword">FALSE</span>) ? <span class="keyword">$this</span>-&gt;db_connect() : <span class="keyword">$this</span>-&gt;db_pconnect();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// No connection resource?  Throw an error</span></span><br><span class="line">	<span class="comment">// some code here ...</span></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">TRUE</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="数据库长连接"><a href="#数据库长连接" class="headerlink" title="数据库长连接"></a>数据库长连接</h3><p>根据 <code>$this-&gt;pconnect</code> 决定数据库使用长连接或者短连接，<code>$this-&gt;pconnect</code> 的取值在数据库配置文件中配置。MySQL 的长连接是存在 php-fpm 子进程里的，进程之间是不共享连接的，所以每个 php-fpm 进程都有一个单独的长连接。使用 </p>
 <p><code>ps -aux | grep fpm</code> 和 <code>netstat -anp | grep 3306</code> 可分别查看 fpm 子进程个数和 MySQL 长连接个数相同。</p>
-<p><img src="images/20180331/fpm-pconnect.png" alt></p>
+<p><img src="/images/20180331/fpm-pconnect.png" alt></p>
 <p>使用 MySQL 长连接可以复用连接通道，减小连接时延，当 PHP 应用访问量不高，并发量不大时，我们只需要开启少量 php-fpm 子进程，每个子进程对应一个 MySQL 连接，但是当应用并发增加， php-fpm 子进程数量扩大时，MySQL 连接数也随之增加，对数据库造成较大压力，特别是当连接数达到数据库上限时会导致其他 fpm 连接异常。因此要注意使用长连接时 fpm 的子进程数不应超过数据库的最大连接数，在数据库中使用<code>SHOW VARIABLES like &#39;max_connections&#39;;</code> 查看数据库最大连接数。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//查看MySQL最大连接数</span><br><span class="line">mysql&gt; SHOW VARIABLES like 'max_connections';</span><br><span class="line">+<span class="comment">-----------------+-------+</span></span><br><span class="line">| Variable_name   | Value |</span><br><span class="line">+<span class="comment">-----------------+-------+</span></span><br><span class="line">| max_connections | 20000 |</span><br><span class="line">+<span class="comment">-----------------+-------+</span></span><br></pre></td></tr></table></figure>
 <h3 id="数据库初始化"><a href="#数据库初始化" class="headerlink" title="数据库初始化"></a>数据库初始化</h3><p>关于 <code>autoinit</code> ： CI 2.x 中默认为  true, 有些业务场景使用缓存且缓存命中率较高，若启用 <code>autoinit</code>，处理每个请 PHP 求时都会去连接数据库，耗时严重。使用 <code>strace -c -p 360558</code> 分析 360558  (FPM 进程id) 进程程序执行情况得出， 程序执行时 read 操作耗时最长。</p>
-<p><img src="images/20180331/count-read-db.png" alt></p>
+<p><img src="/images/20180331/count-read-db.png" alt></p>
 <p>再使用 <code>strace  -p 360558 2&gt;&amp;1</code> 查看 360558  (FPM 进程id) 进程程序执行情况发现有大量的 read() 和 write() 操作，经分析发现一个参数为 4 的时候为数据库相关操作。</p>
-<p><img src="images/20180331/read-db.png" alt></p>
+<p><img src="/images/20180331/read-db.png" alt></p>
 <p>将 <code>autoinit</code> 改为 false 后，read 和 write 耗时几乎为 0.</p>
-<p><img src="images/20180331/no-read.png" alt></p>
+<p><img src="/images/20180331/no-read.png" alt></p>
 <p><strong>需要注意的时将 autoinit 改为 false 后，CI 会报如下错误</strong>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_escape_string(): This function is deprecated; use mysql_real_escape_string() instead.</span><br></pre></td></tr></table></figure>
 <p>参照 <a href="https://stackoverflow.com/questions/26169455/codeigniter-use-mysql-real-escape-string-instead-database-connection-issue" target="_blank" rel="noopener">https://stackoverflow.com/questions/26169455/codeigniter-use-mysql-real-escape-string-instead-database-connection-issue</a> 修改 <code>system/database/drivers/mysql/mysql_driver.php</code>下的 <code>escape_str()</code> 为：</p>
@@ -512,7 +512,7 @@
 <p><span>本文标题:</span><a href="/fundamental/programming-language/php/php-codeigniter-load-database-analysis/">CodeIgniter load database 分析</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2018年03月31日 - 05:03</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/fundamental/programming-language/php/php-codeigniter-load-database-analysis/" title="CodeIgniter load database 分析">https://0x400.com/fundamental/programming-language/php/php-codeigniter-load-database-analysis/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/fundamental/programming-language/php/php-codeigniter-load-database-analysis/" aria-label="复制成功！"></i></span>
 </p>

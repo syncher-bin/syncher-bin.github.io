@@ -123,12 +123,12 @@
 <meta property="og:site_name" content="Pylon&#39;s Blog">
 <meta property="og:description" content="创建索引1．ALTER TABLEALTER TABLE用来创建普通索引、UNIQUE索引或PRIMARY KEY索引。  123456ALTER TABLE table_name ADD INDEX IDX_ABC (a,b,c) USEING BTREEALTER TABLE table_name ADD UNIQUE (column_list)ALTER TABLE table_name A">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://0x400.com/fundamental/storage/mysql-sql-about-index/images/20180119/show_index.png">
-<meta property="og:updated_time" content="2021-01-30T02:14:19.432Z">
+<meta property="og:image" content="https://0x400.com/images/20180119/show_index.png">
+<meta property="og:updated_time" content="2021-02-21T14:30:45.687Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL 索引相关 SQL">
 <meta name="twitter:description" content="创建索引1．ALTER TABLEALTER TABLE用来创建普通索引、UNIQUE索引或PRIMARY KEY索引。  123456ALTER TABLE table_name ADD INDEX IDX_ABC (a,b,c) USEING BTREEALTER TABLE table_name ADD UNIQUE (column_list)ALTER TABLE table_name A">
-<meta name="twitter:image" content="https://0x400.com/fundamental/storage/mysql-sql-about-index/images/20180119/show_index.png">
+<meta name="twitter:image" content="https://0x400.com/images/20180119/show_index.png">
 
 
 
@@ -459,7 +459,7 @@
  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> index_name <span class="keyword">ON</span> table_name (column_list)</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">UNIQUE</span> <span class="keyword">INDEX</span> index_name <span class="keyword">ON</span> table_name (column_list)</span><br></pre></td></tr></table></figure>
 <p>table_name、index_name 和column_list 具有与ALTER TABLE语句中相同的含义，索引名不可选。另外，不能用CREATE INDEX语句创建PRIMARY KEY索引。</p>
 <h2 id="查看索引"><a href="#查看索引" class="headerlink" title="查看索引"></a>查看索引</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW INDEX FROM tblname;</span><br><span class="line"></span><br><span class="line">mysql&gt; SHOW  KEYS FROM tblname;</span><br></pre></td></tr></table></figure>
-<p><img src="images/20180119/show_index.png" alt></p>
+<p><img src="/images/20180119/show_index.png" alt></p>
 <p>　　</p>
 <table>
 <thead>
@@ -546,7 +546,7 @@
 <p><span>本文标题:</span><a href="/fundamental/storage/mysql-sql-about-index/">MySQL 索引相关 SQL</a></p>
 <p><span>文章作者:</span><a href="/" title="访问 Pylon, Syncher 的个人博客">Pylon, Syncher</a></p>
 <p><span>发布时间:</span>2018年01月19日 - 16:01</p>
-<p><span>最后更新:</span>2021年01月30日 - 10:01</p>
+<p><span>最后更新:</span>2021年02月21日 - 22:02</p>
 <p><span>原始链接:</span><a href="/fundamental/storage/mysql-sql-about-index/" title="MySQL 索引相关 SQL">https://0x400.com/fundamental/storage/mysql-sql-about-index/</a>
 <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://0x400.com/fundamental/storage/mysql-sql-about-index/" aria-label="复制成功！"></i></span>
 </p>
