@@ -4,35 +4,6 @@
   
     
     <entry>
-      <title>文件上传接口失败的 Debug 记录</title>
-      <link href="/experience/debugging/dev-debugging-uploading-file-failed-after-swagger-upgrade/"/>
-      <url>/experience/debugging/dev-debugging-uploading-file-failed-after-swagger-upgrade/</url>
-      
-        <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在近期的工作中，我们将项目中的 Swagger 从 v2 升级到了 v3，升级到 v3 后发现文件上传接口挂了，导致文件上传失败。本文记录了该问题的定位过程。</p><a id="more"></a><h3 id="文件上传原理"><a href="#文件上传原理" class="headerlink" title="文件上传原理"></a>文件上传原理</h3><p>文件上传协议细节</p><p>Form 表单，enctype, multipart/form-data</p><h2 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h2><h3 id="req-files-从哪来-？"><a href="#req-files-从哪来-？" class="headerlink" title="req.files 从哪来 ？"></a><code>req.files</code> 从哪来 ？</h3><p>问题的表现为 <code>req.files</code> 为空，所以我们需要弄明白 <code>req.files</code> 是从哪里来的？</p><p>ExpressJS 的请求中并没有 <code>files</code> 属性，也就是说这个属性是中间件添加进去的。项目中总共使用了 25 个中间件，使用二分法在中间件中打断点调试，结合中间件的具体作用发现是由 <a href="https://github.com/APIDevTools/swagger-express-middleware" target="_blank" rel="noopener">swagger-express-middleware</a> 的 <a href="https://apitools.dev/swagger-express-middleware/docs/middleware/parseRequest.html" target="_blank" rel="noopener">parseRequest</a> 解析请求并将上传的文件信息添加到 <code>req.files</code> 中的。</p><h3 id="req-files-为什么为空？"><a href="#req-files-为什么为空？" class="headerlink" title="req.files 为什么为空？"></a><code>req.files</code> 为什么为空？</h3><p>请求经过 parseRequest 后，<code>req.files</code> 保存用户上传的文件信息，为什么请求在流经 Controller 时候丢失了文件信息呢？根据请求的流向，我们知道请求在跳出所有中间件之后才到达 Controller，也就是某个中间件覆盖掉了 <code>req.files</code> 。使用相同的方法我们排查到了是 <a href="https://github.com/cdimascio/express-openapi-validator" target="_blank" rel="noopener">express-openapi-validator</a> 在作怪。</p><p>仔细研究 express-openapi-validator 后发现，其同样会解析用户的请求并同样的将用户上传的文件信息保存到 <code>req.files</code> 中。swagger-express-middleware 和 express-openapi-validator 分别作用于 Swagger 的 v2 和 v3 版本。</p><h3 id="express-openapi-validator-为什么会覆盖掉原来的-req-files"><a href="#express-openapi-validator-为什么会覆盖掉原来的-req-files" class="headerlink" title="express-openapi-validator 为什么会覆盖掉原来的 req.files?"></a>express-openapi-validator 为什么会覆盖掉原来的 <code>req.files</code>?</h3><p>Busboy 解析规则</p><blockquote><p>Emitted for each new file form field found. transferEncoding contains the ‘Content-Transfer-Encoding’ value for the file stream. mimeType contains the ‘Content-Type’ value for the file stream.</p></blockquote><p><a href>express-openapi-validator</a>  =&gt; <a href="https://github.com/expressjs/multer" target="_blank" rel="noopener">GitHub - expressjs/multer: Node.js middleware for handling <code>multipart/form-data</code>.</a> =&gt; <a href="https://github.com/mscdex/busboy/" target="_blank" rel="noopener">GitHub - mscdex/busboy: A streaming parser for HTML form data for node.js</a> =&gt; dicer</p><p><a href="https://www.barretlee.com/blog/2017/06/06/dive-to-nodejs-at-stream-module/" target="_blank" rel="noopener">https://www.barretlee.com/blog/2017/06/06/dive-to-nodejs-at-stream-module/</a></p><p>Multer 解析文件，并写入磁盘</p><h3 id="问题复现"><a href="#问题复现" class="headerlink" title="问题复现"></a>问题复现</h3><h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p><code>fileUploader: false</code></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> Experience </category>
-          
-          <category> Debugging </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Debugging </tag>
-            
-            <tag> Swagger </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>一按钮不正常显示的 Debug 记录</title>
       <link href="/experience/debugging/dev-show-less-is-not-disappearing-debugging/"/>
       <url>/experience/debugging/dev-show-less-is-not-disappearing-debugging/</url>
