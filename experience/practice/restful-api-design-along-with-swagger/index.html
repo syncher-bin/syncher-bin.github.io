@@ -115,13 +115,13 @@
 
 
 
-<meta name="description" content="0x00. OpenAPI 简介在之前的文章 Restful API 设计指导 一文中，我介绍了如何设计 Restful API。随着前后端的分离以及软件架构的复杂化，你是否也遇到过一下的一个或者多个问题？  API 的设计和实现并非同一个人。无论是在大型互联网架构中还是复杂的软件开发中，API 的设计往往是有架构师、资深工程师、PM 等这些具有丰富经验的角色负责。一旦设计完成，才将具体的开发任务">
+<meta name="description" content="0x00. OpenAPI 简介在之前的文章 Restful API 设计指导 中，我介绍了如何设计 Restful API。随着前后端的分离以及软件架构的复杂化，你是否也遇到过以下的一个或者多个问题呢？  API 的设计和实现并非同一个人。无论是在大型互联网架构中还是复杂的软件开发中，API 的设计往往是有架构师、资深工程师、PM 等这些经验丰富的人负责。一旦设计完成，才将具体的开发任务分配给相">
 <meta name="keywords" content="API,Swagger,OpenAPI">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 OpenAPI 设计 RESTful API (一)">
 <meta property="og:url" content="https://0x400.com/experience/practice/restful-api-design-along-with-swagger/index.html">
 <meta property="og:site_name" content="Pylon&#39;s Blog">
-<meta property="og:description" content="0x00. OpenAPI 简介在之前的文章 Restful API 设计指导 一文中，我介绍了如何设计 Restful API。随着前后端的分离以及软件架构的复杂化，你是否也遇到过一下的一个或者多个问题？  API 的设计和实现并非同一个人。无论是在大型互联网架构中还是复杂的软件开发中，API 的设计往往是有架构师、资深工程师、PM 等这些具有丰富经验的角色负责。一旦设计完成，才将具体的开发任务">
+<meta property="og:description" content="0x00. OpenAPI 简介在之前的文章 Restful API 设计指导 中，我介绍了如何设计 Restful API。随着前后端的分离以及软件架构的复杂化，你是否也遇到过以下的一个或者多个问题呢？  API 的设计和实现并非同一个人。无论是在大型互联网架构中还是复杂的软件开发中，API 的设计往往是有架构师、资深工程师、PM 等这些经验丰富的人负责。一旦设计完成，才将具体的开发任务分配给相">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://0x400.com/images/2021-01/spec2-vs-spec3.png">
 <meta property="og:image" content="https://0x400.com/images/2021-01/spec-v2.png">
@@ -131,10 +131,10 @@
 <meta property="og:image" content="https://0x400.com/images/2021-01/post-user.png">
 <meta property="og:image" content="https://0x400.com/images/2021-01/get-user.png">
 <meta property="og:image" content="https://0x400.com/images/2021-01/API-dev-process.png">
-<meta property="og:updated_time" content="2021-05-01T10:34:58.567Z">
+<meta property="og:updated_time" content="2021-05-01T10:45:54.243Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 OpenAPI 设计 RESTful API (一)">
-<meta name="twitter:description" content="0x00. OpenAPI 简介在之前的文章 Restful API 设计指导 一文中，我介绍了如何设计 Restful API。随着前后端的分离以及软件架构的复杂化，你是否也遇到过一下的一个或者多个问题？  API 的设计和实现并非同一个人。无论是在大型互联网架构中还是复杂的软件开发中，API 的设计往往是有架构师、资深工程师、PM 等这些具有丰富经验的角色负责。一旦设计完成，才将具体的开发任务">
+<meta name="twitter:description" content="0x00. OpenAPI 简介在之前的文章 Restful API 设计指导 中，我介绍了如何设计 Restful API。随着前后端的分离以及软件架构的复杂化，你是否也遇到过以下的一个或者多个问题呢？  API 的设计和实现并非同一个人。无论是在大型互联网架构中还是复杂的软件开发中，API 的设计往往是有架构师、资深工程师、PM 等这些经验丰富的人负责。一旦设计完成，才将具体的开发任务分配给相">
 <meta name="twitter:image" content="https://0x400.com/images/2021-01/spec2-vs-spec3.png">
 
 
@@ -458,11 +458,11 @@
       
 
       
-        <h2 id="0x00-OpenAPI-简介"><a href="#0x00-OpenAPI-简介" class="headerlink" title="0x00. OpenAPI 简介"></a>0x00. OpenAPI 简介</h2><p>在之前的文章 <a href="https://0x400.com/experience/practice/dev-restful-api-design/">Restful API 设计指导</a> 一文中，我介绍了如何设计 Restful API。随着前后端的分离以及软件架构的复杂化，你是否也遇到过一下的一个或者多个问题？</p>
+        <h2 id="0x00-OpenAPI-简介"><a href="#0x00-OpenAPI-简介" class="headerlink" title="0x00. OpenAPI 简介"></a>0x00. OpenAPI 简介</h2><p>在之前的文章 <a href="https://0x400.com/experience/practice/dev-restful-api-design/">Restful API 设计指导</a> 中，我介绍了如何设计 Restful API。随着前后端的分离以及软件架构的复杂化，你是否也遇到过以下的一个或者多个问题呢？</p>
 <ol>
-<li>API 的设计和实现并非同一个人。无论是在大型互联网架构中还是复杂的软件开发中，API 的设计往往是有架构师、资深工程师、PM 等这些具有丰富经验的角色负责。一旦设计完成，才将具体的开发任务分配给相应的 API 开发工程师。</li>
-<li>API 也有完整的测试。越是负责的产品中，越需要保证产品的质量，一般而言会有专门的测试团队对 API 进行完整的自动化测试。</li>
-<li>前端开发工程师（或者 API 的调用方）和 API 工程师协同开发，因此前端工程师需要 Mock API 以解除对 API 的依赖。</li>
+<li>API 的设计和实现并非同一个人。无论是在大型互联网架构中还是复杂的软件开发中，API 的设计往往是有架构师、资深工程师、PM 等这些经验丰富的人负责。一旦设计完成，才将具体的开发任务分配给相应的 API 开发工程师。</li>
+<li>API 有完整的测试。越是复杂的产品，对产品的质量有越高的要求，一般而言会有专门的测试团队对 API 进行完整的自动化测试。</li>
+<li>前端开发工程师（或者 API 的调用方）和 API 工程师协同开发，因此前端工程师需要 Mock API 以解除对 API 开发进度的依赖。</li>
 </ol>
 <a id="more"></a>
 <p>为了解决以上问题中，至少需要保证两点：</p>
