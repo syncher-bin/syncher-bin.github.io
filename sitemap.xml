@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://0x400.com/experience/practice/dev-restful-api-design-along-with-swagger/</loc>
+    
+    <lastmod>2021-05-01T10:12:11.881Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://0x400.com/experience/practice/dev-restful-api-design/</loc>
+    
+    <lastmod>2021-05-01T08:39:36.727Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://0x400.com/fundamental/storage/mysql-store-tree-using-closure-table/</loc>
     
     <lastmod>2021-02-21T14:30:48.544Z</lastmod>
@@ -222,13 +236,6 @@
     <loc>https://0x400.com/experience/practice/dev-send-weather-forecast-timely/</loc>
     
     <lastmod>2021-01-30T02:19:24.627Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://0x400.com/experience/practice/dev-restful-api-design/</loc>
-    
-    <lastmod>2021-01-30T02:19:15.947Z</lastmod>
     
   </url>
   

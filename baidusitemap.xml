@@ -4,6 +4,58 @@
 
     
   <url>
+    <loc>https://0x400.com/experience/practice/dev-restful-api-design-along-with-swagger/</loc>
+    <lastmod>2021-05-01T10:12:11.881Z</lastmod>
+    <data>
+        <display>
+        <title>使用 OpenAPI 设计 RESTful API (一)</title>
+        <pubTime>2021-01-18T13:47:30.000Z</pubTime>
+        
+        <tag>API</tag>
+         
+        <tag>Swagger</tag>
+         
+        <tag>OpenAPI</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="https://0x400.com/categories/experience/"/>
+          
+             
+              <breadCrumb title="Practice" url="https://0x400.com/categories/experience/practice/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://0x400.com/experience/practice/dev-restful-api-design/</loc>
+    <lastmod>2021-05-01T08:39:36.727Z</lastmod>
+    <data>
+        <display>
+        <title>RESTful API 设计指导</title>
+        <pubTime>2019-02-21T13:47:30.000Z</pubTime>
+        
+        <tag>API</tag>
+         
+        <tag>PHP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Experience" url="https://0x400.com/categories/experience/"/>
+          
+             
+              <breadCrumb title="Practice" url="https://0x400.com/categories/experience/practice/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://0x400.com/fundamental/storage/mysql-store-tree-using-closure-table/</loc>
     <lastmod>2021-02-21T14:30:48.544Z</lastmod>
     <data>
@@ -777,31 +829,6 @@
         <display>
         <title>定时发送天气预报</title>
         <pubTime>2017-08-11T09:15:49.000Z</pubTime>
-        
-        <tag>API</tag>
-         
-        <tag>PHP</tag>
-         
-         
-           
-             
-              <breadCrumb title="Experience" url="https://0x400.com/categories/experience/"/>
-          
-             
-              <breadCrumb title="Practice" url="https://0x400.com/categories/experience/practice/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://0x400.com/experience/practice/dev-restful-api-design/</loc>
-    <lastmod>2021-01-30T02:19:15.947Z</lastmod>
-    <data>
-        <display>
-        <title>RESTful API 设计指导</title>
-        <pubTime>2019-02-21T13:47:30.000Z</pubTime>
         
         <tag>API</tag>
          
